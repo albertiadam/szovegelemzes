@@ -1,0 +1,2 @@
+# szovegelemzes
+Szövegelemzés projekt
