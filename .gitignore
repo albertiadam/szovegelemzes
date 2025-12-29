@@ -12,3 +12,4 @@ __pycache__/
 *.npy
 *.model.state
 *.model.id2word
+*.html
