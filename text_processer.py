@@ -5,7 +5,9 @@ from pathlib import Path
 import json
 import pandas as pd
 from gensim.parsing.preprocessing import STOPWORDS
+import spacy
 
+WORKER = spacy.load("en_core_web_sm", disable=["parser", "ner"])
 
 def _process_single_file(file_path: Path) -> list[str]:
     cleaned_words = []
@@ -29,7 +31,8 @@ def _process_single_file(file_path: Path) -> list[str]:
         cleaned = TextProcesser.clean_word(word)
         if cleaned is not None and cleaned not in STOPWORDS:
             cleaned_words.append(cleaned)
-    return cleaned_words
+    doc = WORKER(" ".join(cleaned_words))
+    return [token.lemma_ for token in doc if len(token.lemma_) > 1 and token.lemma_ not in STOPWORDS]
 
 
 class TextProcesser:
@@ -52,9 +55,6 @@ class TextProcesser:
         if len(cleaned) in (0, 1) or cleaned in STOPWORDS:
             return None
         return cleaned.strip().lower()
-
-    def process_single_file(self, file_path: str) -> list[str]:
-        return _process_single_file(str(file_path))
 
     def process_all_files(self, workers: int | None = None) -> dict[str, list[str]]:
         if self.filtered_files_df.empty:

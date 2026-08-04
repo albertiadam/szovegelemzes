@@ -1,19 +1,19 @@
 from pathlib import Path
 import os
 import pandas as pd
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 
 
 
 class PreProcessor:
     _ABS_KEYWORDS = ['trust', 'receivables', 'securitization', 'mortgage','fund']
-    _CYBER_SECURITY_NEEDED_DATE = 20231218
 
-    def __init__(self, base_path,output_file="filtered_file_details.csv"):
+    def __init__(self, base_path: Path, year:str, output_file:str="filtered_file_details.csv"):
         self.base_path = base_path
         self.output_file = output_file
+        self.cyber_security_needed_date = int(f"{year}1218")
 
-    def preprocess_file(self, file_folder):
+    def preprocess_file(self, file_folder: list[str]) -> list[str]:
         file, folder = file_folder
         try:
             with open(self.base_path / folder / file,"r") as f:
@@ -26,7 +26,7 @@ class PreProcessor:
                     :
                     period_idx + 35
                 ])
-                if period_of_report > self._CYBER_SECURITY_NEEDED_DATE:
+                if period_of_report > self.cyber_security_needed_date:
                     company_name = text[
                         text.find("COMPANY CONFORMED NAME")
                         :
@@ -39,7 +39,7 @@ class PreProcessor:
             print(f"Error processing file {file}: {e}")
             return None
             
-    def get_files(self):
+    def get_files(self) -> list[list[str]]:
         folders = os.listdir(self.base_path)
         print(f"Found {len(folders)} folders in base path.")
         files = []
@@ -51,7 +51,7 @@ class PreProcessor:
         print(f"Found {len(files)} files matching criteria.")
         return files
 
-    def filter_files(self, file_details_list):
+    def filter_files(self, file_details_list: list[list[str]]) -> pd.DataFrame:
         filtered_df = pd.DataFrame(file_details_list)
         filtered_df.columns = ["folder", "file_name", "period_of_report", "company_name", "accession_number"]
         filtered_df['submit_date'] = filtered_df['file_name'].str[:8].astype(int)
@@ -64,12 +64,12 @@ class PreProcessor:
         filtered_df = filtered_df.drop_duplicates(subset=['company_name', 'period_of_report'], keep='last')
         return filtered_df
     
-    def run(self):
+    def run(self) -> pd.DataFrame | None:
         files = self.get_files()
         if files is None:
             print("No files found, stopping preprocessing.")
             return
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor() as executor:
             results = list(executor.map(self.preprocess_file, files))
             file_details_list = [result for result in results if result is not None]
         filtered_df = self.filter_files(file_details_list)
