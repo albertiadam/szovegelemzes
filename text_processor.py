@@ -28,14 +28,14 @@ def _process_single_file(file_path: Path) -> list[str]:
     item_1c_text = text[start_idx:end_idx]
     
     for word in item_1c_text.split():
-        cleaned = TextProcesser.clean_word(word)
+        cleaned = TextProcessor.clean_word(word)
         if cleaned is not None and cleaned not in STOPWORDS:
             cleaned_words.append(cleaned)
     doc = WORKER(" ".join(cleaned_words))
     return [token.lemma_ for token in doc if len(token.lemma_) > 1 and token.lemma_ not in STOPWORDS]
 
 
-class TextProcesser:
+class TextProcessor:
     def __init__(self, filtered_files_df: pd.DataFrame, base_path: str, output_file:str):
         self.filtered_files_df = filtered_files_df
         self.base_path = base_path

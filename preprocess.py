@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import pandas as pd
-from concurrent.futures import ThreadPoolExecutor
+import concurrent.futures
 
 
 
@@ -11,7 +11,7 @@ class PreProcessor:
     def __init__(self, base_path: Path, year:str, output_file:str="filtered_file_details.csv"):
         self.base_path = base_path
         self.output_file = output_file
-        self.cyber_security_needed_date = int(f"{year}1218")
+        self.cyber_security_needed_date = int(f"{int(year) - 1}1218")
 
     def preprocess_file(self, file_folder: list[str]) -> list[str]:
         file, folder = file_folder
@@ -69,7 +69,7 @@ class PreProcessor:
         if files is None:
             print("No files found, stopping preprocessing.")
             return
-        with ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
             results = list(executor.map(self.preprocess_file, files))
             file_details_list = [result for result in results if result is not None]
         filtered_df = self.filter_files(file_details_list)
