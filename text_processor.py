@@ -14,12 +14,12 @@ def _process_single_file(file_path: Path) -> list[str]:
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
         text = f.read()
 
-    start_idx = text.find("Item 1C. Cybersecurity")
+    start_idx = text.find("Item 1C. Cybersecurity") # TODO regex to find the start of the section
     if start_idx == -1:
         return cleaned_words
 
     start_idx += len("Item 1C. Cybersecurity")
-    end_idx = text[start_idx:].find("Item 2. Properties.")
+    end_idx = text[start_idx:].find("Item 2. Properties.") # TODO regex to find the end of the section, between words any character is allowed, Item 1C could be w/o space
     if end_idx == -1:
         return cleaned_words
     else:

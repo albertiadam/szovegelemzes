@@ -3,15 +3,15 @@ from gensim import corpora
 from gensim.models import LdaModel
 import pyLDAvis.gensim_models
 
-class LDAProcessor:
+class LDAProcessor: # TODO flag run together or separate
     def __init__(self, curr_data:dict[str, list[str]], prev_data:dict[str, list[str]], num_topics:int) -> None:
         self.curr_data = curr_data
         self.prev_data = prev_data
         self.num_topics = num_topics
-    def _get_dictionary_and_corpus(self):
+    def _get_dictionary_and_corpus(self): # TODO add method param
         self.all_docs = list(self.curr_data.values()) + list(self.prev_data.values())
         self.all_companies = list(self.curr_data.keys()) + list(self.prev_data.keys())
-        self.dictionary = corpora.Dictionary(self.all_docs)
+        self.dictionary = corpora.Dictionary(self.all_docs) # TODO filter extreme / Bigrams
         self.corpus = [self.dictionary.doc2bow(doc) for doc in self.all_docs]
 
     def _train_lda_model(self):

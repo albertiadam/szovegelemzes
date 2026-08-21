@@ -63,7 +63,7 @@ class PreProcessor:
         )
         filtered_df = filtered_df.drop_duplicates(subset=['company_name', 'period_of_report'], keep='last')
         return filtered_df
-    
+
     def run(self) -> pd.DataFrame | None:
         files = self.get_files()
         if files is None:
