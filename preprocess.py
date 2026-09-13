@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import re
 import pandas as pd
 import concurrent.futures
 
@@ -33,8 +34,15 @@ class PreProcessor:
                         text.find("CENTRAL INDEX KEY")
                     ].split(":")[-1]
                     accession_number = "-".join(file[file.find("edgar_data_") + 11:].split("-")[:2])
+                    industry_match = re.search(
+                        r"STANDARD INDUSTRIAL CLASSIFICATION\s*:\s*(.*?)\s*\[(\d{4})\]",
+                        text,
+                        re.IGNORECASE,
+                    )
+                    industry = industry_match.group(1).strip() if industry_match else None
+                    sic = industry_match.group(2) if industry_match else None
                 
-                    return [folder,file,period_of_report,company_name,accession_number]
+                    return [folder, file, period_of_report, company_name, accession_number, industry, sic]
         except Exception as e:
             print(f"Error processing file {file}: {e}")
             return None
@@ -53,7 +61,15 @@ class PreProcessor:
 
     def filter_files(self, file_details_list: list[list[str]]) -> pd.DataFrame:
         filtered_df = pd.DataFrame(file_details_list)
-        filtered_df.columns = ["folder", "file_name", "period_of_report", "company_name", "accession_number"]
+        filtered_df.columns = [
+            "folder",
+            "file_name",
+            "period_of_report",
+            "company_name",
+            "accession_number",
+            "industry",
+            "sic",
+        ]
         filtered_df['submit_date'] = filtered_df['file_name'].str[:8].astype(int)
         filtered_df = filtered_df[~filtered_df['company_name'].str.lower().str.contains("|".join(self._ABS_KEYWORDS))]
         filtered_df['filing_sequence'] = filtered_df['file_name'].apply(lambda x: int(x.split("-")[-1].split(".")[0]))

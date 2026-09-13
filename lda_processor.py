@@ -3,50 +3,88 @@ from gensim import corpora
 from gensim.models import LdaModel
 import pyLDAvis.gensim_models
 
-class LDAProcessor: # TODO flag run together or separate
-    def __init__(self, curr_data:dict[str, list[str]], prev_data:dict[str, list[str]], num_topics:int) -> None:
+class LDAProcessor:
+    def __init__(
+        self,
+        curr_data: dict[str, list[str]],
+        prev_data: dict[str, list[str]],
+        num_topics: int,
+        run_separately: bool = False,
+        use_bigrams: bool = False,
+        num_of_passes: int = 15,
+        num_of_iterations: int = 50
+    ) -> None:
         self.curr_data = curr_data
         self.prev_data = prev_data
         self.num_topics = num_topics
-    def _get_dictionary_and_corpus(self): # TODO add method param
-        self.all_docs = list(self.curr_data.values()) + list(self.prev_data.values())
-        self.all_companies = list(self.curr_data.keys()) + list(self.prev_data.keys())
-        self.dictionary = corpora.Dictionary(self.all_docs) # TODO filter extreme / Bigrams
-        self.corpus = [self.dictionary.doc2bow(doc) for doc in self.all_docs]
+        self.run_separately = run_separately
+        self.use_bigrams = use_bigrams
+        self.num_of_passes = num_of_passes
+        self.num_of_iterations = num_of_iterations
 
-    def _train_lda_model(self):
-        self.lda_model = LdaModel(corpus=self.corpus, num_topics=self.num_topics, id2word=self.dictionary)
+    def _prepare_doc(self, doc: list[str]) -> list[str]:
+        if not self.use_bigrams:
+            return doc
 
-    def _get_dominant_topic(self, doc:list[str]) -> int:
+        bigrams = [
+            f"{doc[index]} {doc[index + 1]}"
+            for index in range(len(doc) - 1)
+        ]
+
+        return bigrams
+
+    def _get_dictionary_and_corpus(self, data=None):
+        raw_docs = list(data.values()) if data is not None else list(self.curr_data.values()) + list(self.prev_data.values())
+        docs = [self._prepare_doc(doc) for doc in raw_docs]
+        dictionary = corpora.Dictionary(docs)
+        corpus = [dictionary.doc2bow(doc) for doc in docs]
+        return dictionary, corpus
+
+    def _train_lda_model(self, dictionary, corpus):
+        return LdaModel(
+            corpus=corpus,
+            num_topics=self.num_topics,
+            id2word=dictionary,
+            passes=self.num_of_passes,
+            iterations=self.num_of_iterations
+        )
+
+    def _get_dominant_topic(self, doc: list[str], dictionary, model) -> int:
         if not doc:
             return None
-        bow = self.dictionary.doc2bow(doc)
-        topic_distribution = self.lda_model.get_document_topics(bow)
+        bow = dictionary.doc2bow(doc)
+        topic_distribution = model.get_document_topics(bow)
         dominant_topic = sorted(topic_distribution, key=lambda x: x[1], reverse=True)[0][0]
         return dominant_topic
 
-    def _export_vis_data(self, output_file:str) -> None:
-        prev_corpus = [self.dictionary.doc2bow(doc) for doc in self.prev_data.values()]
-        curr_corpus = [self.dictionary.doc2bow(doc) for doc in self.curr_data.values()]
+    def _export_vis_data(self, output_file: str, dictionary: corpora.Dictionary, model: LdaModel, data: dict[str, list[str]]) -> None:
+        corpus = [dictionary.doc2bow(self._prepare_doc(doc)) for doc in data.values()]
+        vis = pyLDAvis.gensim_models.prepare(model, corpus, dictionary, sort_topics=False)
 
-        prev_vis = pyLDAvis.gensim_models.prepare(self.lda_model, prev_corpus, self.dictionary, sort_topics=False)
-        curr_vis = pyLDAvis.gensim_models.prepare(self.lda_model, curr_corpus, self.dictionary, sort_topics=False)
-
-        pyLDAvis.save_html(prev_vis, f'prev_{output_file}')
-        pyLDAvis.save_html(curr_vis, f'curr_{output_file}')
+        pyLDAvis.save_html(vis, f'{output_file}')
 
     def create_comparison(self) -> pd.DataFrame:
-        self._get_dictionary_and_corpus()
-        self._train_lda_model()
+        if self.run_separately:
+            print("Running LDA separately for previous and current year data...")
+            prev_dictionary, prev_corpus = self._get_dictionary_and_corpus(self.prev_data)
+            curr_dictionary, curr_corpus = self._get_dictionary_and_corpus(self.curr_data)
+            prev_model = self._train_lda_model(prev_dictionary, prev_corpus)
+            curr_model = self._train_lda_model(curr_dictionary, curr_corpus)
+        else:
+            print("Running LDA on combined data...")
+            dictionary, corpus = self._get_dictionary_and_corpus()
+            model = self._train_lda_model(dictionary, corpus)
+            prev_dictionary = curr_dictionary = dictionary
+            prev_model = curr_model = model
 
         results = []
 
-        for company in self.all_companies:
-            prev_words = self.prev_data.get(company, [])
-            curr_words = self.curr_data.get(company, [])
+        for company in list(self.prev_data.keys()) + list(self.curr_data.keys()):
+            prev_words = self._prepare_doc(self.prev_data.get(company, []))
+            curr_words = self._prepare_doc(self.curr_data.get(company, []))
 
-            prev_topic = self._get_dominant_topic(prev_words)
-            curr_topic = self._get_dominant_topic(curr_words)
+            prev_topic = self._get_dominant_topic(prev_words, prev_dictionary, prev_model)
+            curr_topic = self._get_dominant_topic(curr_words, curr_dictionary, curr_model)
 
             results.append({
                 "company": company,
@@ -55,7 +93,8 @@ class LDAProcessor: # TODO flag run together or separate
             })
         results_df = pd.DataFrame(results)
 
-        self._export_vis_data(output_file="lda_visualization.html")
+        self._export_vis_data("process_outputs/prev_lda_visualization.html", prev_dictionary, prev_model, self.prev_data)
+        self._export_vis_data("process_outputs/curr_lda_visualization.html", curr_dictionary, curr_model, self.curr_data)
 
         return results_df
 

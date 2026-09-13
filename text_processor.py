@@ -1,5 +1,6 @@
 import os
 import re
+import html
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 import json
@@ -9,37 +10,57 @@ import spacy
 
 WORKER = spacy.load("en_core_web_sm", disable=["parser", "ner"])
 
-def _process_single_file(file_path: Path) -> list[str]:
+def _process_single_file_with_status(
+    file_path: Path,
+) -> tuple[list[str], str]:
     cleaned_words = []
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
         text = f.read()
 
-    start_idx = text.find("Item 1C. Cybersecurity") # TODO regex to find the start of the section
-    if start_idx == -1:
-        return cleaned_words
+    normalized_text = html.unescape(re.sub(r"<[^>]*>", " ", text))
+    normalized_text = re.sub(r"\s+", " ", normalized_text)
+    start_match = re.search(
+        r"\bitem\s*1c\b[^\w]{0,40}cybersecurity\b",
+        normalized_text,
+        re.IGNORECASE,
+    )
+    if start_match is None:
+        return cleaned_words, "missing_item_1c_cybersecurity"
 
-    start_idx += len("Item 1C. Cybersecurity")
-    end_idx = text[start_idx:].find("Item 2. Properties.") # TODO regex to find the end of the section, between words any character is allowed, Item 1C could be w/o space
-    if end_idx == -1:
-        return cleaned_words
-    else:
-        end_idx += start_idx
+    start_idx = start_match.end()
+    end_match = re.search(
+        r"\bitem\s*2\b[^\w]{0,40}properties\b",
+        normalized_text[start_idx:],
+        re.IGNORECASE,
+    )
+    if end_match is None:
+        return cleaned_words, "missing_item_2_properties"
 
-    item_1c_text = text[start_idx:end_idx]
+    item_1c_text = normalized_text[start_idx:start_idx + end_match.start()]
     
     for word in item_1c_text.split():
         cleaned = TextProcessor.clean_word(word)
         if cleaned is not None and cleaned not in STOPWORDS:
             cleaned_words.append(cleaned)
     doc = WORKER(" ".join(cleaned_words))
-    return [token.lemma_ for token in doc if len(token.lemma_) > 1 and token.lemma_ not in STOPWORDS]
+    tokens = [token.lemma_ for token in doc if len(token.lemma_) > 1 and token.lemma_ not in STOPWORDS]
+    if not tokens:
+        return tokens, "empty_after_processing"
+    return tokens, "processed"
 
 
 class TextProcessor:
-    def __init__(self, filtered_files_df: pd.DataFrame, base_path: str, output_file:str):
+    def __init__(
+        self,
+        filtered_files_df: pd.DataFrame,
+        base_path: str,
+        output_file: str,
+        skipped_output_file: str | None = None,
+    ):
         self.filtered_files_df = filtered_files_df
         self.base_path = base_path
         self.output_file = output_file
+        self.skipped_output_file = skipped_output_file
 
     @staticmethod
     def clean_word(word):
@@ -70,17 +91,29 @@ class TextProcessor:
             workers = min(os.cpu_count() or 1, len(file_paths))
 
         if workers <= 1:
-            return {
-                company_name: _process_single_file(file_path)
-                for company_name, file_path in zip(company_names, file_paths)
-            }
+            processing_results = [
+                _process_single_file_with_status(file_path)
+                for file_path in file_paths
+            ]
+        else:
+            with ProcessPoolExecutor(max_workers=workers) as executor:
+                processing_results = []
+                for index, result in enumerate(executor.map(_process_single_file_with_status, file_paths)):
+                    processing_results.append(result)
+                    if index + 1 == len(file_paths) or (index + 1) % max(1, len(file_paths) // 10) == 0:
+                        print(f"Processed {index + 1}/{len(file_paths)} files...")
 
-        with ProcessPoolExecutor(max_workers=workers) as executor:
-            results = []
-            for index, result in enumerate(executor.map(_process_single_file, file_paths)):
-                results.append(result)
-                if index + 1 == len(file_paths) or (index + 1) % max(1, len(file_paths) // 10) == 0:
-                    print(f"Processed {index + 1}/{len(file_paths)} files...")
+        results = [result[0] for result in processing_results]
+        statuses = [result[1] for result in processing_results]
+
+        if self.skipped_output_file is not None:
+            skipped_rows = []
+            for index, status in enumerate(statuses):
+                if status != "processed":
+                    row = self.filtered_files_df.iloc[index].to_dict()
+                    row["reason"] = status
+                    skipped_rows.append(row)
+            pd.DataFrame(skipped_rows).to_csv(self.skipped_output_file, index=False)
 
         final_result = {
             company_name: result

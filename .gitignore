@@ -16,3 +16,5 @@ __pycache__/
 *.html
 *.csv
 regi.py
+output/
+process_outputs/
