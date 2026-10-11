@@ -38,15 +38,15 @@ import pandas as pd
 import os
 import json
 
-BASE_PATH_DICT = {
+BASE_PATH_DICT:dict[str, Path] = {
     '2024': Path(r"C:\Users\User\Desktop\10-X_C_2024\2024"),
     '2025': Path(r"C:\Users\User\Desktop\10-X_C_2025\2025"),
 }
-FILTERED_DF_OUTPUT = "process_outputs/filtered_file_details_{year}.csv"
-PROCESSED_DATA_OUTPUT = "process_outputs/processed_data_{year}.json"
-SKIPPED_FILE_OUTPUT = "process_outputs/skipped_file_details_{year}.csv"
-LDA_MODEL_PASSES = 15
-LDA_MODEL_ITERATIONS = 50
+FILTERED_DF_OUTPUT:str = "process_outputs/filtered_file_details_{year}.csv"
+PROCESSED_DATA_OUTPUT:str = "process_outputs/processed_data_{year}.json"
+SKIPPED_FILE_OUTPUT:str = "process_outputs/skipped_file_details_{year}.csv"
+LDA_MODEL_PASSES:int = 15
+LDA_MODEL_ITERATIONS:int = 50
 
 def get_inputs():
     global OVERRIDE_PROCESSED_DATA_FILE, RUN_LDA_SEPARATELY, USE_BIGRAMS, NUM_TOPICS
@@ -97,7 +97,7 @@ def main() -> None:
     print(f"Previous year data: {len(prev_data)} companies")
     print(f"Current year data: {len(curr_data)} companies")
 
-    LDA_processor = LDAProcessor(
+    lda_processor = LDAProcessor(
         curr_data=curr_data,
         prev_data=prev_data,
         num_topics=NUM_TOPICS,
@@ -106,7 +106,7 @@ def main() -> None:
         num_of_passes=LDA_MODEL_PASSES,
         num_of_iterations=LDA_MODEL_ITERATIONS
     )
-    comparison_df = LDA_processor.create_comparison()
+    comparison_df = lda_processor.create_comparison()
 
     comparison_df.to_csv("process_outputs/LDA_comparison_results.csv", index=False)
 

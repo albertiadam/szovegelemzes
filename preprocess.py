@@ -3,11 +3,12 @@ import os
 import re
 import pandas as pd
 import concurrent.futures
+from typing import ClassVar
 
 
 class PreProcessor:
     """ PreProcessor class to filter and preprocess files based on specific criteria. """
-    _ABS_KEYWORDS = ['trust', 'receivables', 'securitization', 'mortgage','fund']
+    _ABS_KEYWORDS: ClassVar[list[str]] = ['trust', 'receivables', 'securitization', 'mortgage','fund']
 
     def __init__(self, base_path: Path, year:str, output_file:str="filtered_file_details.csv"):
         """
@@ -28,7 +29,7 @@ class PreProcessor:
         """
         file, folder = file_folder
         try:
-            with open(self.base_path / folder / file,"r") as f:
+            with open(self.base_path / folder / file,"r", encoding="utf-8") as f:
 
                 # Read only the first 10,000 characters to find the period of report and other details
                 text = f.read(10_000).replace("\n","").replace("\t","")

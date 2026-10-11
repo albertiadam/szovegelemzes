@@ -73,7 +73,7 @@ class TextProcessor:
     def __init__(
         self,
         filtered_files_df: pd.DataFrame,
-        base_path: str,
+        base_path: Path,
         output_file: str,
         skipped_output_file: str | None = None,
     ):

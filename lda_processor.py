@@ -54,7 +54,7 @@ class LDAProcessor:
             return None
         bow = dictionary.doc2bow(doc)
         topic_distribution = model.get_document_topics(bow)
-        dominant_topic = sorted(topic_distribution, key=lambda x: x[1], reverse=True)[0][0]
+        dominant_topic = max(topic_distribution, key=lambda x: x[1])[0]
         return dominant_topic
 
     def _export_vis_data(self, output_file: str, dictionary: corpora.Dictionary, model: LdaModel, data: dict[str, list[str]]) -> None:
