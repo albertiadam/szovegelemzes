@@ -119,7 +119,8 @@ class PreProcessor:
     def run(self) -> pd.DataFrame | None:
         """
         Run the preprocessing steps: get files, preprocess them, and filter the results.
-
+        Uses ThreadPoolExecutor to parallelize the preprocessing of files.
+        
         :return: Filtered DataFrame containing the relevant file details or None if no files were found.
         """
         files = self.get_files()
