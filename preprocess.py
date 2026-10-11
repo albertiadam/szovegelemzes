@@ -29,6 +29,8 @@ class PreProcessor:
         file, folder = file_folder
         try:
             with open(self.base_path / folder / file,"r") as f:
+
+                # Read only the first 10,000 characters to find the period of report and other details
                 text = f.read(10_000).replace("\n","").replace("\t","")
                 period_idx = text.find("CONFORMED PERIOD OF REPORT")
                 if period_idx == -1:
@@ -70,6 +72,8 @@ class PreProcessor:
             folder_path = self.base_path / folder
             if os.path.isdir(folder_path):
                 files.extend([[f,folder] for f in os.listdir(folder_path) if os.path.isfile(folder_path / f)])
+
+        # Filter files to include only those with "K" in the file name
         files = [[file,folder] for file,folder in files if "K" in file]
         print(f"Found {len(files)} files matching criteria.")
         return files
