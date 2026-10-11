@@ -5,16 +5,27 @@ import pandas as pd
 import concurrent.futures
 
 
-
 class PreProcessor:
+    """ PreProcessor class to filter and preprocess files based on specific criteria. """
     _ABS_KEYWORDS = ['trust', 'receivables', 'securitization', 'mortgage','fund']
 
     def __init__(self, base_path: Path, year:str, output_file:str="filtered_file_details.csv"):
+        """
+        Initialize the PreProcessor with the base path, year, and output file name.
+        :param base_path: The base path where the files are located.
+        :param year: The year to filter the files.
+        :param output_file: The name of the output CSV file to save filtered file details.
+        """
         self.base_path = base_path
         self.output_file = output_file
         self.cyber_security_needed_date = int(f"{int(year) - 1}1218")
 
     def preprocess_file(self, file_folder: list[str]) -> list[str]:
+        """
+        Preprocess a single file to extract relevant details.
+        :param file_folder: A list containing the file name and folder name.
+        :return: A list containing the extracted details or None if the file does not meet criteria.
+        """
         file, folder = file_folder
         try:
             with open(self.base_path / folder / file,"r") as f:
@@ -48,6 +59,10 @@ class PreProcessor:
             return None
             
     def get_files(self) -> list[list[str]]:
+        """
+        Get a list of files in the base path that match specific criteria.
+        :return: A list of lists, where each inner list contains the file name and folder name.
+        """
         folders = os.listdir(self.base_path)
         print(f"Found {len(folders)} folders in base path.")
         files = []
@@ -60,6 +75,11 @@ class PreProcessor:
         return files
 
     def filter_files(self, file_details_list: list[list[str]]) -> pd.DataFrame:
+        """
+        Filter the list of file details based on specific criteria.
+        :param file_details_list: List of file details to filter.
+        :return: Filtered DataFrame containing the relevant file details.
+        """
         filtered_df = pd.DataFrame(file_details_list)
         filtered_df.columns = [
             "folder",
@@ -71,8 +91,24 @@ class PreProcessor:
             "sic",
         ]
         filtered_df['submit_date'] = filtered_df['file_name'].str[:8].astype(int)
+
+        # Amendments (10-K/A, 10-KT/A) are excluded: Rule 12b-15 requires only the amended
+        # items to be restated, so they may lack Item 1C. Original filings are complete.
+        # Limitation: a company is dropped if only its amendment contains Item 1C.
+        filtered_df["form"] = filtered_df["file_name"].str.split("_").str[1]
+        is_amendment = filtered_df["form"].str.endswith("-A")
+        print(f"Excluded {is_amendment.sum()} amendments out of {len(filtered_df)}.")
+        filtered_df = filtered_df[~is_amendment]
+
+        # Drop asset-backed entities, trusts and funds, which are not operating companies.
+        # Matching is by name keyword, so a real company with such a word in its name
+        # (e.g. "Northern Trust Corp") is also dropped.
         filtered_df = filtered_df[~filtered_df['company_name'].str.lower().str.contains("|".join(self._ABS_KEYWORDS))]
+        
         filtered_df['filing_sequence'] = filtered_df['file_name'].apply(lambda x: int(x.split("-")[-1].split(".")[0]))
+        
+        # One filing per company and reporting period: the latest by submit date, then by
+        # sequence number.
         filtered_df = filtered_df.sort_values(
             by=['company_name', 'period_of_report', 'submit_date', 'filing_sequence'],
             ascending=[True, True, True, True]
@@ -81,10 +117,15 @@ class PreProcessor:
         return filtered_df
 
     def run(self) -> pd.DataFrame | None:
+        """
+        Run the preprocessing steps: get files, preprocess them, and filter the results.
+
+        :return: Filtered DataFrame containing the relevant file details or None if no files were found.
+        """
         files = self.get_files()
         if files is None:
             print("No files found, stopping preprocessing.")
-            return
+            return None
         with concurrent.futures.ThreadPoolExecutor() as executor:
             results = list(executor.map(self.preprocess_file, files))
             file_details_list = [result for result in results if result is not None]
