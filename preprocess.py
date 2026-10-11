@@ -18,7 +18,7 @@ class PreProcessor:
         """
         self.base_path = base_path
         self.output_file = output_file
-        self.cyber_security_needed_date = int(f"{int(year) - 1}1218")
+        self.cyber_security_needed_date = int(f"{int(year) - 1}1215")
 
     def preprocess_file(self, file_folder: list[str]) -> list[str]:
         """
@@ -38,7 +38,7 @@ class PreProcessor:
                     :
                     period_idx + 35
                 ])
-                if period_of_report > self.cyber_security_needed_date:
+                if period_of_report >= self.cyber_security_needed_date:
                     company_name = text[
                         text.find("COMPANY CONFORMED NAME")
                         :
