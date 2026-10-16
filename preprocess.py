@@ -118,7 +118,7 @@ class PreProcessor:
             by=['company_name', 'period_of_report', 'submit_date', 'filing_sequence'],
             ascending=[True, True, True, True]
         )
-        filtered_df = filtered_df.drop_duplicates(subset=['company_name', 'period_of_report'], keep='last')
+        filtered_df = filtered_df.drop_duplicates(subset=['company_name'], keep='last')
         return filtered_df
 
     def run(self) -> pd.DataFrame | None:

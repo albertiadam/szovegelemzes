@@ -29,14 +29,14 @@ Additional parameters might need override which can be found at the start of mai
     - LDA_MODEL_PASSES: number of passes for LDA model training
     - LDA_MODEL_ITERATIONS: number of iterations for LDA model training
 """
+import json
+import os
+import pandas as pd
+from lda_processor import LDAProcessor
+from pathlib import Path
+from post_processor import PostProcessor
 from preprocess import PreProcessor
 from text_processor import TextProcessor
-from lda_processor import LDAProcessor
-from post_processor import PostProcessor
-from pathlib import Path
-import pandas as pd
-import os
-import json
 
 BASE_PATH_DICT:dict[str, Path] = {
     '2024': Path(r"C:\Users\User\Desktop\10-X_C_2024\2024"),
