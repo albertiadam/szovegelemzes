@@ -65,13 +65,13 @@ class LDAProcessor:
 
     def create_comparison(self) -> pd.DataFrame:
         if self.run_separately:
-            print("Running LDA separately for previous and current year data...")
+            print("[LDA_PROCESS] Running LDA separately for previous and current year data...")
             prev_dictionary, prev_corpus = self._get_dictionary_and_corpus(self.prev_data)
             curr_dictionary, curr_corpus = self._get_dictionary_and_corpus(self.curr_data)
             prev_model = self._train_lda_model(prev_dictionary, prev_corpus)
             curr_model = self._train_lda_model(curr_dictionary, curr_corpus)
         else:
-            print("Running LDA on combined data...")
+            print("[LDA_PROCESS] Running LDA on combined data...")
             dictionary, corpus = self._get_dictionary_and_corpus()
             model = self._train_lda_model(dictionary, corpus)
             prev_dictionary = curr_dictionary = dictionary

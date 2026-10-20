@@ -59,7 +59,7 @@ def get_inputs():
 
 
 def get_one_year_data(year:str) -> dict[str, list[str]]:
-    print(f"Getting year data for {year}")
+    print(f"[MAIN] --- Getting year data for {year} ---")
     filtered_df_output: str = FILTERED_DF_OUTPUT.format(year=year)
     processed_data_output: str = PROCESSED_DATA_OUTPUT.format(year=year)
     base_path: Path = BASE_PATH_DICT[year]
@@ -67,13 +67,11 @@ def get_one_year_data(year:str) -> dict[str, list[str]]:
     preprocessor = PreProcessor(base_path=base_path, year=year, output_file=filtered_df_output)
 
     if not OVERRIDE_PROCESSED_DATA_FILE and os.path.exists(processed_data_output):
-        print(f"Processed data file '{processed_data_output}' already exists. Skipping processing.")
+        print(f"[MAIN] Processed data file '{processed_data_output}' already exists. Skipping processing.")
         with open(processed_data_output, "r") as f:
             processed_data = json.load(f)
     else:
-        print(f"Running preprocessing for {year}")
         filtered_files_df = preprocessor.run()
-        print(f"Running text processing for {year}")
         text_processor = TextProcessor(
             filtered_files_df=filtered_files_df,
             base_path=base_path,
@@ -81,7 +79,6 @@ def get_one_year_data(year:str) -> dict[str, list[str]]:
             skipped_output_file=SKIPPED_FILE_OUTPUT.format(year=year),
         )
         processed_data = text_processor.process_all_files()
-        print(f"Processed data for year {year} has been saved to '{processed_data_output}'")
 
     return processed_data
 
@@ -94,8 +91,8 @@ def main() -> None:
         year='2025'
     )
 
-    print(f"Previous year data: {len(prev_data)} companies")
-    print(f"Current year data: {len(curr_data)} companies")
+    print(f"[MAIN] Previous year data: {len(prev_data)} companies")
+    print(f"[MAIN] Current year data: {len(curr_data)} companies")
 
     lda_processor = LDAProcessor(
         curr_data=curr_data,

@@ -163,7 +163,7 @@ class TextProcessor:
                 for index, result in enumerate(executor.map(_process_single_file_with_status, file_paths)):
                     processing_results.append(result)
                     if index + 1 == len(file_paths) or (index + 1) % max(1, len(file_paths) // 10) == 0:
-                        print(f"Processed {index + 1}/{len(file_paths)} files...")
+                        print(f"[TEXT_PROCESS] Processed {index + 1}/{len(file_paths)} files...")
 
         results = [result[0] for result in processing_results]
         statuses = [result[1] for result in processing_results]

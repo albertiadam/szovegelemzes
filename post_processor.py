@@ -16,7 +16,7 @@ class PostProcessor:
         unchanged = (
             cleaned_df['previous_dominant_topic'] == cleaned_df['current_dominant_topic']
         ).sum()
-        print(f"Total unchanged companies: {unchanged}")
+        print(f"[POST_PROCESS] Total unchanged companies: {unchanged}")
         trans_matrix = pd.crosstab(
             cleaned_df['previous_dominant_topic'],
             cleaned_df['current_dominant_topic'],
@@ -38,18 +38,18 @@ class PostProcessor:
 
     def get_summary(self) -> None:
         trans_matrix = self._get_cross_tab()
-        print("Contingency Table:")
+        print("[POST_PROCESS] Contingency Table:")
         print(trans_matrix)
         trans_matrix.to_csv("process_outputs/contingency_table.csv")
         chi2, p_value, _, _ = chi2_contingency(trans_matrix)
-        print(f"Chi-square statistic: {chi2}")
-        print(f"P-value: {p_value}")
+        print(f"[POST_PROCESS] Chi-square statistic: {chi2}")
+        print(f"[POST_PROCESS] P-value: {p_value}")
         n = trans_matrix.sum().sum()
         r,k = trans_matrix.shape
         cramers_v = np.sqrt(chi2 / (n * (min(r-1, k-1))))
-        print(f"Cramer's V: {cramers_v}")
+        print(f"[POST_PROCESS] Cramer's V: {cramers_v}")
 
         grouped_by_skipped_companies = self._get_skipped_companies_details()
-        print("Skipped Companies Details:")
+        print(f"[POST_PROCESS] Skipped Companies Details:")
         print(grouped_by_skipped_companies)
         grouped_by_skipped_companies.to_csv("process_outputs/grouped_skipped_companies.csv", index=False)
