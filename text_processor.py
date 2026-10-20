@@ -8,7 +8,9 @@ import pandas as pd
 from gensim.parsing.preprocessing import STOPWORDS
 import spacy
 
+
 WORKER = spacy.load("en_core_web_sm", disable=["parser", "ner"])
+MIN_ITEM_1C_WORDS = 20
 
 def _process_single_file_with_status(
     file_path: Path,
@@ -19,7 +21,8 @@ def _process_single_file_with_status(
     :param file_path: Path to the file to be processed.
     :return: A tuple containing a list of cleaned words and a status string indicating the result of processing.
             "missing_item_1c_cybersecurity" if the "Item 1C - Cybersecurity" section is not found,
-            "missing_item_2_properties" if the "Item 2 - Properties" section is not found,
+            "missing_section_end" if the section end is not found,
+            "item_1c_too_short" if the "Item 1C - Cybersecurity" section is found but too short,
             "empty_after_processing" if no valid tokens remain after processing,
             "processed" if the file was successfully processed and contains valid tokens.
     """
@@ -31,8 +34,17 @@ def _process_single_file_with_status(
     normalized_text = re.sub(r"\s+", " ", normalized_text)
     
     # Search for the "Item 1C - Cybersecurity" section
+    # Tolerates words split by the parser ("I tem", "C yber Security") and "Item IC".
+    # Skips cross-references ("see Part I, Item 1C. Cybersecurity of this Report")
+    # and table of contents entries ("Item 1C. Cybersecurity 20 Item 2. Properties").
     start_match = re.search(
-        r"\bitem\s*1c\b[^\w]{0,40}cybersecurity\b",
+        r"(?<![,\"“])(?<!,\s)(?<!\bsee\s)(?<!\bin\s)(?<!\bto\s)(?<!\band\s)(?<!under\s)(?<!within\s)"
+        r"(?<!item\s)(?<!item)"
+        r"\b(?:i\s?t\s?e\s?m\s*)?[1I]\s*C\b[^\w]{0,40}"
+        r"c\s?y\s?b\s?e\s?r\W{0,3}s\s?e\s?c\s?u\s?r\s?i\s?t\s?y\b"
+        r"(?![^\w]*(?:\d{1,3}[^\w]+)?(?:i\s?t\s?e\s?m\s*)?(?:[2-4]\b|1\s*c\b))"
+        r"(?![^\w]*(?:of\s+th|of\s+part|in\s+th|below|above|for\b|herein))"
+        r"[^\w]*",
         normalized_text,
         re.IGNORECASE,
     )
@@ -42,15 +54,21 @@ def _process_single_file_with_status(
     start_idx = start_match.end()
 
     # Search for the "Item 2 - Properties" section to determine the end of the "Item 1C - Cybersecurity" section
+    # Also accepts "Description of Properties" and split words ("P roperties"). Falls back
+    # to Item 3 / Item 4 for filings that merge Item 2 into Item 1 ("Business and Properties").
     end_match = re.search(
-        r"\bitem\s*2\b[^\w]{0,40}properties\b",
+        r"(?:\bi\s?t\s?e\s?m\s*|\b(?=[2-4]\s*\.))[2-4]\b[^\w]{0,40}"
+        r"(?:description\s+of\s+)?(?:p\s?r\s?o\s?p\s?e\s?r\s?t|l\s?e\s?g\s?a\s?l\s+p|m\s?i\s?n\s?e\s+s\s?a\s?f\s?e\s?t\s?y)",
         normalized_text[start_idx:],
         re.IGNORECASE,
     )
     if end_match is None:
-        return cleaned_words, "missing_item_2_properties"
+        return cleaned_words, "missing_section_end"
 
     item_1c_text = normalized_text[start_idx:start_idx + end_match.start()]
+
+    if len(item_1c_text.split()) < MIN_ITEM_1C_WORDS:
+        return cleaned_words, "item_1c_too_short"
 
     # Clean and tokenize the extracted text
     for word in item_1c_text.split():
