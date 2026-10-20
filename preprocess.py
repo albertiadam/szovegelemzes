@@ -108,7 +108,11 @@ class PreProcessor:
         # Drop asset-backed entities, trusts and funds, which are not operating companies.
         # Matching is by name keyword, so a real company with such a word in its name
         # (e.g. "Northern Trust Corp") is also dropped.
-        filtered_df = filtered_df[~filtered_df['company_name'].str.lower().str.contains("|".join(self._ABS_KEYWORDS))]
+        
+        contains_abs_keywords = filtered_df['company_name'].str.lower().str.contains("|".join(self._ABS_KEYWORDS))
+        print(f"{len(contains_abs_keywords)} companies contain ABS keywords.")
+        filtered_df[contains_abs_keywords].to_csv(f"process_outputs/abs_companies_{self.year}.csv", index=False)
+        filtered_df = filtered_df[~contains_abs_keywords]
         
         filtered_df['filing_sequence'] = filtered_df['file_name'].apply(lambda x: int(x.split("-")[-1].split(".")[0]))
         
