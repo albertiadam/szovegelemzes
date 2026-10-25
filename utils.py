@@ -12,9 +12,9 @@ from gensim import corpora
 import json
 
 def get_data() -> dict[str, list[str]]:
-    with open("processed_data_2024.json", "r") as f:
+    with open("process_outputs/processed_data_2024.json", "r") as f:
         prev_data = json.load(f)
-    with open("processed_data_2025.json", "r") as f:
+    with open("process_outputs/processed_data_2025.json", "r") as f:
         curr_data = json.load(f)
 
     all_data = {**prev_data, **curr_data}

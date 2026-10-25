@@ -50,6 +50,6 @@ class PostProcessor:
         print(f"[POST_PROCESS] Cramer's V: {cramers_v}")
 
         grouped_by_skipped_companies = self._get_skipped_companies_details()
-        print(f"[POST_PROCESS] Skipped Companies Details:")
+        print("[POST_PROCESS] Skipped Companies Details:")
         print(grouped_by_skipped_companies)
         grouped_by_skipped_companies.to_csv("process_outputs/grouped_skipped_companies.csv", index=False)

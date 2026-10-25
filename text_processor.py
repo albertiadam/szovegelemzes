@@ -11,6 +11,7 @@ import spacy
 
 WORKER = spacy.load("en_core_web_sm", disable=["parser", "ner"])
 MIN_ITEM_1C_WORDS = 20
+MAX_ITEM_1C_WORDS = 5000  # real sections stay under ~3,500 words; longer means a missed end
 
 def _process_single_file_with_status(
     file_path: Path,
@@ -23,6 +24,8 @@ def _process_single_file_with_status(
             "missing_item_1c_cybersecurity" if the "Item 1C - Cybersecurity" section is not found,
             "missing_section_end" if the section end is not found,
             "item_1c_too_short" if the "Item 1C - Cybersecurity" section is found but too short,
+            "item_1c_too_long" if the section is too long, meaning its end heading was missed,
+            "item_1c_wrong_start" if the section contains Item 1B, meaning the start was not the real heading,
             "empty_after_processing" if no valid tokens remain after processing,
             "processed" if the file was successfully processed and contains valid tokens.
     """
@@ -38,12 +41,13 @@ def _process_single_file_with_status(
     # Skips cross-references ("see Part I, Item 1C. Cybersecurity of this Report")
     # and table of contents entries ("Item 1C. Cybersecurity 20 Item 2. Properties").
     start_match = re.search(
-        r"(?<![,\"“])(?<!,\s)(?<!\bsee\s)(?<!\bin\s)(?<!\bto\s)(?<!\band\s)(?<!under\s)(?<!within\s)"
-        r"(?<!item\s)(?<!item)"
+        r"(?<![,;\"“])(?<![,;]\s)(?<!\bsee\s)(?<!\bin\s)(?<!\bto\s)(?<!\bthe\s)(?<!\band\s)"
+        r"(?<!read\s)(?<!this\s)(?<!part\s)(?<!under\s)(?<!within\s)(?<!part\si\s)(?<!part\si\.\s)"
+        r"(?<!item\s)(?<!item)(?<!i\stem\s)"
         r"\b(?:i\s?t\s?e\s?m\s*)?[1I]\s*C\b[^\w]{0,40}"
         r"c\s?y\s?b\s?e\s?r\W{0,3}s\s?e\s?c\s?u\s?r\s?i\s?t\s?y\b"
-        r"(?![^\w]*(?:\d{1,3}[^\w]+)?(?:i\s?t\s?e\s?m\s*)?(?:[2-4]\b|1\s*c\b))"
-        r"(?![^\w]*(?:of\s+th|of\s+part|in\s+th|below|above|for\b|herein))"
+        r"(?![^\w]*(?:\d{1,3}[^\w]+)?(?:i\s?t\s?e\s?m\b|part\b|[2-4]\b))"
+        r"(?![^\w]*(?:of\b|in\s+th|to\s+th|below|above|for\b|herein|contained|section))"
         r"[^\w]*",
         normalized_text,
         re.IGNORECASE,
@@ -54,11 +58,16 @@ def _process_single_file_with_status(
     start_idx = start_match.end()
 
     # Search for the "Item 2 - Properties" section to determine the end of the "Item 1C - Cybersecurity" section
-    # Also accepts "Description of Properties" and split words ("P roperties"). Falls back
-    # to Item 3 / Item 4 for filings that merge Item 2 into Item 1 ("Business and Properties").
+    # Also accepts "Description of Properties", split words ("P roperties") and any other
+    # "Item 2." title. Falls back to Item 3 / Item 4 for filings that merge Item 2 into
+    # Item 1 ("Business and Properties"). Some filings put an "Item 1D" or an unnumbered
+    # "Executive Officers of the Registrant" listing between Item 1C and Item 2.
     end_match = re.search(
         r"(?:\bi\s?t\s?e\s?m\s*|\b(?=[2-4]\s*\.))[2-4]\b[^\w]{0,40}"
-        r"(?:description\s+of\s+)?(?:p\s?r\s?o\s?p\s?e\s?r\s?t|l\s?e\s?g\s?a\s?l\s+p|m\s?i\s?n\s?e\s+s\s?a\s?f\s?e\s?t\s?y)",
+        r"(?:description\s+of\s+)?(?:p\s?r\s?o\s?p\s?e\s?r\s?t|l\s?e\s?g\s?a\s?l\s+p|m\s?i\s?n\s?e\s+s\s?a\s?f\s?e\s?t\s?y)"
+        r"|(?<![,;]\s)(?<!\bsee\s)(?<!\bin\s)(?<!\bto\s)(?<!\band\s)(?<!under\s)"
+        r"\bi\s?t\s?e\s?m\s*(?:2\s*[.:|\-–—]\s*[a-z]|1\s*d\b)"
+        r"|executive\s+officers\s+of\s+the\s+registrant(?=\W+(?:set\s+forth|name\b))",
         normalized_text[start_idx:],
         re.IGNORECASE,
     )
@@ -69,6 +78,14 @@ def _process_single_file_with_status(
 
     if len(item_1c_text.split()) < MIN_ITEM_1C_WORDS:
         return cleaned_words, "item_1c_too_short"
+    if len(item_1c_text.split()) > MAX_ITEM_1C_WORDS:
+        return cleaned_words, "item_1c_too_long"
+
+    # Item 1B always precedes Item 1C, so a section containing the 1B heading started
+    # at a cross-reference or table of contents entry, not at the rea
+    # l 1C heading.
+    if re.search(r"\bi\s?t\s?e\s?m\s*1\s*b\b|unresolved\s+staff\s+comments", item_1c_text, re.IGNORECASE):
+        return cleaned_words, "item_1c_wrong_start"
 
     # Clean and tokenize the extracted text
     for word in item_1c_text.split():
