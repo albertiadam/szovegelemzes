@@ -1,0 +1,374 @@
+industry,reason,skipped_companies_count
+PHARMACEUTICAL PREPARATIONS,missing_item_1c_cybersecurity,192
+ASSET-BACKED SECURITIES,item_1c_too_short,66
+BIOLOGICAL PRODUCTS (NO DIAGNOSTIC SUBSTANCES),missing_item_1c_cybersecurity,66
+SERVICES-PREPACKAGED SOFTWARE,missing_item_1c_cybersecurity,59
+BLANK CHECKS,missing_item_1c_cybersecurity,51
+"SERVICES-BUSINESS SERVICES, NEC",missing_item_1c_cybersecurity,38
+STATE COMMERCIAL BANKS,missing_item_1c_cybersecurity,37
+SURGICAL & MEDICAL INSTRUMENTS & APPARATUS,missing_item_1c_cybersecurity,37
+REAL ESTATE INVESTMENT TRUSTS,missing_item_1c_cybersecurity,35
+BLANK CHECKS,item_1c_too_short,28
+CRUDE PETROLEUM & NATURAL GAS,missing_item_1c_cybersecurity,22
+FINANCE SERVICES,missing_item_1c_cybersecurity,22
+SERVICES-COMPUTER PROCESSING & DATA PREPARATION,missing_item_1c_cybersecurity,22
+"SERVICES-COMPUTER PROGRAMMING, DATA PROCESSING, ETC.",missing_item_1c_cybersecurity,21
+NATIONAL COMMERCIAL BANKS,missing_item_1c_cybersecurity,16
+"SAVINGS INSTITUTION, FEDERALLY CHARTERED",missing_item_1c_cybersecurity,15
+SERVICES-MANAGEMENT CONSULTING SERVICES,missing_item_1c_cybersecurity,14
+SEMICONDUCTORS & RELATED DEVICES,missing_item_1c_cybersecurity,14
+MOTOR VEHICLE PARTS & ACCESSORIES,missing_item_1c_cybersecurity,11
+INVESTMENT ADVICE,missing_item_1c_cybersecurity,11
+SERVICES-COMPUTER PROGRAMMING SERVICES,missing_item_1c_cybersecurity,11
+RETAIL-EATING PLACES,missing_item_1c_cybersecurity,10
+ELECTRIC SERVICES,missing_item_1c_cybersecurity,10
+SERVICES-MISCELLANEOUS AMUSEMENT & RECREATION,missing_item_1c_cybersecurity,10
+LABORATORY ANALYTICAL INSTRUMENTS,missing_item_1c_cybersecurity,10
+ELECTROMEDICAL & ELECTROTHERAPEUTIC APPARATUS,missing_item_1c_cybersecurity,10
+PHARMACEUTICAL PREPARATIONS,item_1c_too_short,9
+STATE COMMERCIAL BANKS,item_1c_too_short,9
+SERVICES-PREPACKAGED SOFTWARE,item_1c_too_short,9
+SERVICES-COMPUTER INTEGRATED SYSTEMS DESIGN,missing_item_1c_cybersecurity,9
+METAL MINING,missing_item_1c_cybersecurity,9
+SERVICES-PERSONAL SERVICES,missing_item_1c_cybersecurity,9
+TELEPHONE & TELEGRAPH APPARATUS,missing_item_1c_cybersecurity,8
+"SAVINGS INSTITUTIONS, NOT FEDERALLY CHARTERED",missing_item_1c_cybersecurity,8
+"FIRE, MARINE & CASUALTY INSURANCE",missing_item_1c_cybersecurity,8
+INSURANCE AGENTS BROKERS & SERVICES,missing_item_1c_cybersecurity,8
+MEDICINAL CHEMICALS & BOTANICAL PRODUCTS,missing_item_1c_cybersecurity,8
+SERVICES-AMUSEMENT & RECREATION SERVICES,missing_item_1c_cybersecurity,8
+REAL ESTATE,missing_item_1c_cybersecurity,8
+SERVICES-MEDICAL LABORATORIES,missing_item_1c_cybersecurity,7
+FOOD & KINDRED PRODUCTS,missing_item_1c_cybersecurity,7
+LIFE INSURANCE,missing_item_1c_cybersecurity,7
+SERVICES-EDUCATIONAL SERVICES,missing_item_1c_cybersecurity,7
+GOLD & SILVER ORES,missing_item_1c_cybersecurity,7
+ELECTRIC & OTHER SERVICES COMBINED,missing_item_1c_cybersecurity,6
+"OIL, GAS FIELD SERVICES, NBC",missing_item_1c_cybersecurity,6
+"MISCELLANEOUS ELECTRICAL MACHINERY, EQUIPMENT & SUPPLIES",missing_item_1c_cybersecurity,6
+"RETAIL-RETAIL STORES, NEC",missing_item_1c_cybersecurity,6
+"COMMUNICATION SERVICES, NEC",missing_item_1c_cybersecurity,6
+"MINING, QUARRYING OF NONMETALLIC MINERALS (NO FUELS)",missing_item_1c_cybersecurity,6
+SERVICES-HEALTH SERVICES,missing_item_1c_cybersecurity,6
+RADIO & TV BROADCASTING & COMMUNICATIONS EQUIPMENT,missing_item_1c_cybersecurity,6
+INDUSTRIAL ORGANIC CHEMICALS,missing_item_1c_cybersecurity,6
+"INDUSTRIAL INSTRUMENTS FOR MEASUREMENT, DISPLAY, AND CONTROL",missing_item_1c_cybersecurity,6
+SERVICES-HELP SUPPLY SERVICES,missing_item_1c_cybersecurity,6
+"PERFUMES, COSMETICS & OTHER TOILET PREPARATIONS",missing_item_1c_cybersecurity,6
+"ORTHOPEDIC, PROSTHETIC & SURGICAL APPLIANCES & SUPPLIES",missing_item_1c_cybersecurity,6
+"SECURITY BROKERS, DEALERS & FLOTATION COMPANIES",missing_item_1c_cybersecurity,6
+SERVICES-ADVERTISING,missing_item_1c_cybersecurity,6
+FINANCE SERVICES,item_1c_too_short,5
+"FIRE, MARINE & CASUALTY INSURANCE",item_1c_too_short,5
+NATIONAL COMMERCIAL BANKS,item_1c_too_short,5
+TELEVISION BROADCASTING STATIONS,missing_item_1c_cybersecurity,5
+"ELECTRONIC COMPONENTS, NEC",missing_item_1c_cybersecurity,5
+ELECTRIC SERVICES,item_1c_too_short,5
+SERVICES-COMPUTER PROCESSING & DATA PREPARATION,item_1c_too_short,5
+RETAIL-NONSTORE RETAILERS,missing_item_1c_cybersecurity,5
+"SAVINGS INSTITUTION, FEDERALLY CHARTERED",item_1c_too_short,5
+IN VITRO & IN VIVO DIAGNOSTIC SUBSTANCES,missing_item_1c_cybersecurity,4
+AGRICULTURE PRODUCTION - CROPS,missing_item_1c_cybersecurity,4
+HOUSEHOLD FURNITURE,missing_item_1c_cybersecurity,4
+MISC INDUSTRIAL & COMMERCIAL MACHINERY & EQUIPMENT,missing_item_1c_cybersecurity,4
+GENERAL INDUSTRIAL MACHINERY & EQUIPMENT,missing_item_1c_cybersecurity,4
+"SPECIAL INDUSTRY MACHINERY, NEC",missing_item_1c_cybersecurity,4
+SERVICES-MANAGEMENT SERVICES,missing_item_1c_cybersecurity,4
+SERVICES-COMMERCIAL PHYSICAL & BIOLOGICAL RESEARCH,missing_item_1c_cybersecurity,4
+BIOLOGICAL PRODUCTS (NO DIAGNOSTIC SUBSTANCES),item_1c_too_short,4
+RETAIL-MISCELLANEOUS RETAIL,missing_item_1c_cybersecurity,4
+RETAIL-MISCELLANEOUS SHOPPING GOODS STORES,missing_item_1c_cybersecurity,4
+SERVICES-MOTION PICTURE & VIDEO TAPE PRODUCTION,missing_item_1c_cybersecurity,4
+RETAIL-CATALOG & MAIL-ORDER HOUSES,item_1c_too_short,4
+"SERVICES-GENERAL MEDICAL & SURGICAL HOSPITALS, NEC",missing_item_1c_cybersecurity,4
+OPERATIVE BUILDERS,missing_item_1c_cybersecurity,4
+MOTOR VEHICLES & PASSENGER CAR BODIES,missing_item_1c_cybersecurity,4
+REFUSE SYSTEMS,missing_item_1c_cybersecurity,4
+TRUCKING (NO LOCAL),missing_item_1c_cybersecurity,4
+LAND SUBDIVIDERS & DEVELOPERS (NO CEMETERIES),missing_item_1c_cybersecurity,4
+WHOLESALE-DRUGS PROPRIETARIES & DRUGGISTS' SUNDRIES,missing_item_1c_cybersecurity,4
+COMPUTER COMMUNICATIONS EQUIPMENT,missing_item_1c_cybersecurity,4
+MOTOR VEHICLE PARTS & ACCESSORIES,item_1c_too_short,4
+REAL ESTATE AGENTS & MANAGERS (FOR OTHERS),missing_item_1c_cybersecurity,4
+NATURAL GAS DISTRIBUTION,missing_item_1c_cybersecurity,4
+"PLASTICS, MATERIALS, SYNTH RESINS & NONVULCAN ELASTOMERS",missing_item_1c_cybersecurity,3
+SEMICONDUCTORS & RELATED DEVICES,item_1c_too_short,3
+"SEARCH, DETECTION, NAVIGATION, GUIDANCE, AERONAUTICAL SYS",missing_item_1c_cybersecurity,3
+INDUSTRIAL ORGANIC CHEMICALS,item_1c_too_short,3
+MISCELLANEOUS CHEMICAL PRODUCTS,missing_item_1c_cybersecurity,3
+PRINTED CIRCUIT BOARDS,missing_item_1c_cybersecurity,3
+MISCELLANEOUS MANUFACTURING INDUSTRIES,missing_item_1c_cybersecurity,3
+"COMPUTER PERIPHERAL EQUIPMENT, NEC",missing_item_1c_cybersecurity,3
+CHEMICALS & ALLIED PRODUCTS,missing_item_1c_cybersecurity,3
+RETAIL-EATING & DRINKING PLACES,missing_item_1c_cybersecurity,3
+CRUDE PETROLEUM & NATURAL GAS,item_1c_too_short,3
+SERVICES-COMPUTER PROGRAMMING SERVICES,item_1c_too_short,3
+"WHOLESALE-APPAREL, PIECE GOODS & NOTIONS",missing_item_1c_cybersecurity,3
+"COMMUNICATIONS EQUIPMENT, NEC",missing_item_1c_cybersecurity,3
+OPHTHALMIC GOODS,missing_item_1c_cybersecurity,3
+RETAIL-CATALOG & MAIL-ORDER HOUSES,missing_item_1c_cybersecurity,3
+ARRANGEMENT OF TRANSPORTATION OF FREIGHT & CARGO,missing_item_1c_cybersecurity,3
+"WHOLESALE-ELECTRONIC PARTS & EQUIPMENT, NEC",missing_item_1c_cybersecurity,3
+"ORDNANCE & ACCESSORIES, (NO VEHICLES/GUIDED MISSILES)",missing_item_1c_cybersecurity,3
+PATENT OWNERS & LESSORS,missing_item_1c_cybersecurity,3
+CABLE & OTHER PAY TELEVISION SERVICES,item_1c_too_short,3
+AGRICULTURE CHEMICALS,missing_item_1c_cybersecurity,3
+BEVERAGES,missing_item_1c_cybersecurity,3
+RETAIL-AUTO & HOME SUPPLY STORES,missing_item_1c_cybersecurity,3
+TRANSPORTATION SERVICES,missing_item_1c_cybersecurity,3
+OIL & GAS FILED MACHINERY & EQUIPMENT,missing_item_1c_cybersecurity,3
+PERSONAL CREDIT INSTITUTIONS,missing_item_1c_cybersecurity,3
+SHORT-TERM BUSINESS CREDIT INSTITUTIONS,missing_item_1c_cybersecurity,3
+SERVICES-ENGINEERING SERVICES,missing_item_1c_cybersecurity,3
+"SOAP, DETERGENT, CLEANING PREPARATIONS, PERFUMES, COSMETICS",missing_item_1c_cybersecurity,3
+RETAIL-FAMILY CLOTHING STORES,missing_item_1c_cybersecurity,3
+"STEEL WORKS, BLAST FURNACES & ROLLING & FINISHING MILLS",missing_item_1c_cybersecurity,3
+FARM MACHINERY & EQUIPMENT,missing_item_1c_cybersecurity,3
+SUGAR & CONFECTIONERY PRODUCTS,missing_item_1c_cybersecurity,3
+REAL ESTATE INVESTMENT TRUSTS,item_1c_too_short,3
+SURGICAL & MEDICAL INSTRUMENTS & APPARATUS,item_1c_too_short,3
+ELECTRONIC COMPUTERS,missing_item_1c_cybersecurity,3
+AGRICULTURE SERVICES,missing_item_1c_cybersecurity,3
+SERVICES-AMUSEMENT & RECREATION SERVICES,item_1c_too_short,3
+TELEPHONE COMMUNICATIONS (NO RADIO TELEPHONE),missing_item_1c_cybersecurity,3
+ASSET-BACKED SECURITIES,missing_item_1c_cybersecurity,3
+"SERVICES-BUSINESS SERVICES, NEC",item_1c_too_short,2
+"SERVICES-AUTOMOTIVE REPAIR, SERVICES & PARKING",item_1c_too_short,2
+"SERVICES-ENGINEERING, ACCOUNTING, RESEARCH, MANAGEMENT",missing_item_1c_cybersecurity,2
+MISCELLANEOUS METAL ORES,missing_item_1c_cybersecurity,2
+SERVICES-HOSPITALS,missing_item_1c_cybersecurity,2
+SERVICES-HOME HEALTH CARE SERVICES,missing_item_1c_cybersecurity,2
+"PLASTICS, MATERIALS, SYNTH RESINS & NONVULCAN ELASTOMERS",item_1c_too_short,2
+"SERVICES-COMPUTER PROGRAMMING, DATA PROCESSING, ETC.",item_1c_too_short,2
+"PLASTICS PRODUCTS, NEC",missing_item_1c_cybersecurity,2
+OIL & GAS FILED MACHINERY & EQUIPMENT,item_1c_too_short,2
+MISCELLANEOUS FOOD PREPARATIONS & KINDRED PRODUCTS,missing_item_1c_cybersecurity,2
+SERVICES-EDUCATIONAL SERVICES,item_1c_too_short,2
+NATURAL GAS TRANSMISSION,item_1c_too_short,2
+PAPERBOARD CONTAINERS & BOXES,missing_item_1c_cybersecurity,2
+HEAVY CONSTRUCTION OTHER THAN BUILDING CONST - CONTRACTORS,missing_item_1c_cybersecurity,2
+SERVICES-MANAGEMENT CONSULTING SERVICES,item_1c_too_short,2
+MISCELLANEOUS FABRICATED METAL PRODUCTS,item_1c_too_short,2
+"CUTLERY, HANDTOOLS & GENERAL HARDWARE",missing_item_1c_cybersecurity,2
+CONSTRUCTION SPECIAL TRADE CONTRACTORS,missing_item_1c_cybersecurity,2
+WATER TRANSPORTATION,missing_item_1c_cybersecurity,2
+"WATER, SEWER, PIPELINE, COMM AND POWER LINE CONSTRUCTION",missing_item_1c_cybersecurity,2
+COMMERCIAL PRINTING,missing_item_1c_cybersecurity,2
+WHOLESALE-CHEMICALS & ALLIED PRODUCTS,missing_item_1c_cybersecurity,2
+WHOLESALE-GROCERIES & GENERAL LINE,missing_item_1c_cybersecurity,2
+"BROADWOVEN FABRIC MILLS, COTTON",missing_item_1c_cybersecurity,2
+BOTTLED & CANNED SOFT DRINKS CARBONATED WATERS,missing_item_1c_cybersecurity,2
+RETAIL-MISCELLANEOUS RETAIL,item_1c_too_short,2
+RETAIL-DEPARTMENT STORES,missing_item_1c_cybersecurity,2
+WHOLESALE-LUMBER & OTHER CONSTRUCTION MATERIALS,missing_item_1c_cybersecurity,2
+APPAREL & OTHER FINISHED PRODS OF FABRICS & SIMILAR MATERIAL,missing_item_1c_cybersecurity,2
+"AIRCRAFT PART & AUXILIARY EQUIPMENT, NEC",missing_item_1c_cybersecurity,2
+WHOLESALE-METALS SERVICE CENTERS & OFFICES,missing_item_1c_cybersecurity,2
+AIRCRAFT ENGINES & ENGINE PARTS,missing_item_1c_cybersecurity,2
+WHOLESALE-MISCELLANEOUS NONDURABLE GOODS,missing_item_1c_cybersecurity,2
+"AIR TRANSPORTATION, SCHEDULED",missing_item_1c_cybersecurity,2
+RETAIL-EATING PLACES,item_1c_too_short,2
+AIR COND & WARM AIR HEATING EQUIP & COMM & INDL REFRIG EQUIP,missing_item_1c_cybersecurity,2
+AGRICULTURE PRODUCTION - LIVESTOCK & ANIMAL SPECIALTIES,missing_item_1c_cybersecurity,2
+RETAIL-SHOE STORES,missing_item_1c_cybersecurity,2
+PHOTOGRAPHIC EQUIPMENT & SUPPLIES,missing_item_1c_cybersecurity,2
+TELEVISION BROADCASTING STATIONS,item_1c_too_short,2
+RAILROAD EQUIPMENT,missing_item_1c_cybersecurity,2
+METAL MINING,item_1c_too_short,2
+SERVICES-MISCELLANEOUS BUSINESS SERVICES,missing_item_1c_cybersecurity,2
+"SECURITY & COMMODITY BROKERS, DEALERS, EXCHANGES & SERVICES",missing_item_1c_cybersecurity,2
+LUMBER & WOOD PRODUCTS (NO FURNITURE),missing_item_1c_cybersecurity,2
+RADIO & TV BROADCASTING & COMMUNICATIONS EQUIPMENT,item_1c_too_short,2
+"LESSORS OF REAL PROPERTY, NEC",missing_item_1c_cybersecurity,2
+"INVESTORS, NEC",missing_item_1c_cybersecurity,2
+INSTRUMENTS FOR MEAS & TESTING OF ELECTRICITY & ELEC SIGNALS,missing_item_1c_cybersecurity,2
+ELECTRONIC COMPONENTS & ACCESSORIES,missing_item_1c_cybersecurity,2
+RADIO BROADCASTING STATIONS,missing_item_1c_cybersecurity,2
+HOUSEHOLD AUDIO & VIDEO EQUIPMENT,missing_item_1c_cybersecurity,2
+SERVICES-TO DWELLINGS & OTHER BUILDINGS,missing_item_1c_cybersecurity,2
+"RAILROADS, LINE-HAUL OPERATING",missing_item_1c_cybersecurity,2
+HOTELS & MOTELS,missing_item_1c_cybersecurity,2
+SHIP & BOAT BUILDING & REPAIRING,missing_item_1c_cybersecurity,2
+HAZARDOUS WASTE MANAGEMENT,missing_item_1c_cybersecurity,2
+REAL ESTATE,item_1c_too_short,2
+STEEL PIPE & TUBES,missing_item_1c_cybersecurity,2
+"STEEL WORKS, BLAST FURNACES  ROLLING MILLS (COKE OVENS)",missing_item_1c_cybersecurity,2
+"SAVINGS INSTITUTIONS, NOT FEDERALLY CHARTERED",item_1c_too_short,1
+SERVICES-ADVERTISING AGENCIES,missing_item_1c_cybersecurity,1
+RETAIL-LUMBER & OTHER BUILDING MATERIALS DEALERS,missing_item_1c_cybersecurity,1
+"SECURITY BROKERS, DEALERS & FLOTATION COMPANIES",item_1c_too_short,1
+ROLLING DRAWING & EXTRUDING OF NONFERROUS METALS,missing_item_1c_cybersecurity,1
+SERVICES-PERSONAL SERVICES,item_1c_too_short,1
+"SERVICES-AUTOMOTIVE REPAIR, SERVICES & PARKING",missing_item_1c_cybersecurity,1
+SURETY INSURANCE,missing_item_1c_cybersecurity,1
+TELEGRAPH & OTHER MESSAGE COMMUNICATIONS,missing_item_1c_cybersecurity,1
+TEXTILE MILL PRODUCTS,missing_item_1c_cybersecurity,1
+TIRES AND INNER TUBES,missing_item_1c_cybersecurity,1
+TITLE INSURANCE,missing_item_1c_cybersecurity,1
+TOTALIZING FLUID METERS & COUNTING DEVICES,missing_item_1c_cybersecurity,1
+"WATCHES, CLOCKS, CLOCKWORK OPERATED DEVICES/PARTS",missing_item_1c_cybersecurity,1
+WATER SUPPLY,missing_item_1c_cybersecurity,1
+WHOLESALE-COMPUTER & PERIPHERAL EQUIPMENT & SOFTWARE,missing_item_1c_cybersecurity,1
+"WHOLESALE-DURABLE GOODS, NEC",missing_item_1c_cybersecurity,1
+"WHOLESALE-ELECTRICAL APPARATUS & EQUIPMENT, WIRING SUPPLIES",missing_item_1c_cybersecurity,1
+WHOLESALE-GROCERIES & RELATED PRODUCTS,item_1c_wrong_start,1
+WHOLESALE-GROCERIES & RELATED PRODUCTS,missing_item_1c_cybersecurity,1
+WHOLESALE-INDUSTRIAL MACHINERY & EQUIPMENT,missing_item_1c_cybersecurity,1
+"WHOLESALE-JEWELRY, WATCHES, PRECIOUS STONES & METALS",missing_item_1c_cybersecurity,1
+"WHOLESALE-MACHINERY, EQUIPMENT & SUPPLIES",item_1c_too_short,1
+WHOLESALE-MISC DURABLE GOODS,missing_item_1c_cybersecurity,1
+WHOLESALE-PETROLEUM & PETROLEUM PRODUCTS (NO BULK STATIONS),missing_item_1c_cybersecurity,1
+WHOLESALE-PROFESSIONAL & COMMERCIAL EQUIPMENT & SUPPLIES,missing_item_1c_cybersecurity,1
+"WOMEN'S, MISSES', AND JUNIORS OUTERWEAR",missing_item_1c_cybersecurity,1
+SURGICAL & MEDICAL INSTRUMENTS & APPARATUS,item_1c_wrong_start,1
+SURETY INSURANCE,item_1c_too_long,1
+SERVICES-CHILD DAY CARE SERVICES,missing_item_1c_cybersecurity,1
+"SPECIALTY CLEANING, POLISHING AND SANITATION PREPARATIONS",missing_item_1c_cybersecurity,1
+"SERVICES-CONSUMER CREDIT REPORTING, COLLECTION AGENCIES",item_1c_too_short,1
+SERVICES-DIRECT MAIL ADVERTISING SERVICES,missing_item_1c_cybersecurity,1
+"SERVICES-EQUIPMENT RENTAL & LEASING, NEC",missing_item_1c_cybersecurity,1
+SERVICES-HEALTH SERVICES,item_1c_too_short,1
+SERVICES-HOME HEALTH CARE SERVICES,item_1c_too_short,1
+SERVICES-MANAGEMENT SERVICES,item_1c_too_short,1
+"SERVICES-MISC HEALTH & ALLIED SERVICES, NEC",missing_item_1c_cybersecurity,1
+SERVICES-MISCELLANEOUS EQUIPMENT RENTAL & LEASING,missing_item_1c_cybersecurity,1
+SERVICES-MOTION PICTURE & VIDEO TAPE DISTRIBUTION,missing_item_1c_cybersecurity,1
+SERVICES-MOTION PICTURE & VIDEO TAPE PRODUCTION,item_1c_too_short,1
+SERVICES-MOTION PICTURE THEATERS,missing_item_1c_cybersecurity,1
+SERVICES-OFFICES & CLINICS OF DOCTORS OF MEDICINE,missing_item_1c_cybersecurity,1
+RETAIL-GROCERY STORES,missing_item_1c_cybersecurity,1
+"SERVICES-RACING, INCLUDING TRACK OPERATION",missing_item_1c_cybersecurity,1
+"SERVICES-SERVICES, NEC",missing_item_1c_cybersecurity,1
+SERVICES-SKILLED NURSING CARE FACILITIES,missing_item_1c_cybersecurity,1
+"SERVICES-SPECIALTY OUTPATIENT FACILITIES, NEC",missing_item_1c_cybersecurity,1
+SERVICES-VIDEO TAPE RENTAL,missing_item_1c_cybersecurity,1
+"SPECIAL INDUSTRY MACHINERY, NEC",item_1c_too_short,1
+"RETAIL-HOME FURNITURE, FURNISHINGS & EQUIPMENT STORES",missing_item_1c_cybersecurity,1
+ACCIDENT & HEALTH INSURANCE,item_1c_wrong_start,1
+RETAIL-FOOD STORES,missing_item_1c_cybersecurity,1
+GAS & OTHER SERVICES COMBINED,missing_item_1c_cybersecurity,1
+ELECTRICAL WORK,missing_item_1c_cybersecurity,1
+ELECTRONIC & OTHER ELECTRICAL EQUIPMENT (NO COMPUTER EQUIP),item_1c_too_short,1
+ELECTRONIC & OTHER ELECTRICAL EQUIPMENT (NO COMPUTER EQUIP),missing_item_1c_cybersecurity,1
+"ELECTRONIC COILS, TRANSFORMERS & OTHER INDUCTORS",missing_item_1c_cybersecurity,1
+"ELECTRONIC COMPONENTS, NEC",item_1c_too_short,1
+ELECTRONIC CONNECTORS,missing_item_1c_cybersecurity,1
+ENGINES & TURBINES,missing_item_1c_cybersecurity,1
+"FABRICATED RUBBER PRODUCTS, NEC",missing_item_1c_cybersecurity,1
+FABRICATED STRUCTURAL METAL PRODUCTS,missing_item_1c_cybersecurity,1
+FEDERAL & FEDERALLY-SPONSORED CREDIT AGENCIES,item_1c_too_short,1
+"FOOTWEAR, (NO RUBBER)",missing_item_1c_cybersecurity,1
+"FUNCTIONS RELATED TO DEPOSITORY BANKING, NEC",item_1c_too_short,1
+"FUNCTIONS RELATED TO DEPOSITORY BANKING, NEC",missing_item_1c_cybersecurity,1
+GEN BUILDING CONTRACTORS - RESIDENTIAL BUILDINGS,item_1c_too_short,1
+"ELECTRIC, GAS & SANITARY SERVICES",missing_item_1c_cybersecurity,1
+GEN BUILDING CONTRACTORS - RESIDENTIAL BUILDINGS,missing_item_1c_cybersecurity,1
+"GLASS PRODUCTS, MADE OF PURCHASED GLASS",missing_item_1c_cybersecurity,1
+GOLD & SILVER ORES,item_1c_too_short,1
+"HEATING EQUIP, EXCEPT ELEC & WARM AIR & PLUMBING FIXTURES",missing_item_1c_cybersecurity,1
+HEAVY CONSTRUCTION OTHER THAN BUILDING CONST - CONTRACTORS,item_1c_too_short,1
+"HOTELS, ROOMING HOUSE, CAMPS & OTHER LODGING PLACES",missing_item_1c_cybersecurity,1
+HOUSEHOLD APPLIANCES,missing_item_1c_cybersecurity,1
+ICE CREAM & FROZEN DESSERTS,missing_item_1c_cybersecurity,1
+INDUSTRIAL & COMMERCIAL FANS & BLOWERS & AIR PURIFYING EQUIP,missing_item_1c_cybersecurity,1
+INDUSTRIAL INORGANIC CHEMICALS,missing_item_1c_cybersecurity,1
+INSTRUMENTS FOR MEAS & TESTING OF ELECTRICITY & ELEC SIGNALS,item_1c_too_short,1
+"JEWELRY, SILVERWARE & PLATED WARE",missing_item_1c_cybersecurity,1
+LABORATORY ANALYTICAL INSTRUMENTS,item_1c_too_short,1
+ELECTRICAL INDUSTRIAL APPARATUS,missing_item_1c_cybersecurity,1
+ELECTRIC SERVICES,item_1c_too_long,1
+LEATHER & LEATHER PRODUCTS,missing_item_1c_cybersecurity,1
+"CANNED, FRUITS, VEG & PRESERVES, JAMS & JELLIES",missing_item_1c_cybersecurity,1
+AGRICULTURE SERVICES,item_1c_too_short,1
+AIR COND & WARM AIR HEATING EQUIP & COMM & INDL REFRIG EQUIP,item_1c_too_short,1
+"AIR TRANSPORTATION, NONSCHEDULED",missing_item_1c_cybersecurity,1
+AIRCRAFT,missing_item_1c_cybersecurity,1
+AIRCRAFT & PARTS,missing_item_1c_cybersecurity,1
+"AIRCRAFT PART & AUXILIARY EQUIPMENT, NEC",item_1c_too_short,1
+"AIRPORTS, FLYING FIELDS & AIRPORT TERMINAL SERVICES",missing_item_1c_cybersecurity,1
+ARRANGEMENT OF TRANSPORTATION OF FREIGHT & CARGO,item_1c_too_short,1
+AUTO CONTROLS FOR REGULATING RESIDENTIAL & COMML ENVIRONMENT,missing_item_1c_cybersecurity,1
+BITUMINOUS COAL & LIGNITE MINING,missing_item_1c_cybersecurity,1
+"BLANKBOOKS, LOOSELEAF BINDERS & BOOKBINDING & RELATED WORK",missing_item_1c_cybersecurity,1
+BOOKS: PUBLISHING OR PUBLISHING AND PRINTING,missing_item_1c_cybersecurity,1
+"CANNED, FROZEN & PRESERVED FRUIT, VEG & FOOD SPECIALTIES",missing_item_1c_cybersecurity,1
+"CEMENT, HYDRAULIC",missing_item_1c_cybersecurity,1
+ELECTRIC LIGHTING & WIRING EQUIPMENT,missing_item_1c_cybersecurity,1
+CHEMICALS & ALLIED PRODUCTS,item_1c_too_short,1
+"COATING, ENGRAVING & ALLIED SERVICES",missing_item_1c_cybersecurity,1
+COGENERATION SERVICES & SMALL POWER PRODUCERS,missing_item_1c_cybersecurity,1
+"COMMERCIAL BANKS, NEC",missing_item_1c_cybersecurity,1
+COMPUTER STORAGE DEVICES,missing_item_1c_cybersecurity,1
+CONSTRUCTION MACHINERY & EQUIP,missing_item_1c_cybersecurity,1
+CONSTRUCTION SPECIAL TRADE CONTRACTORS,item_1c_too_short,1
+COOKIES & CRACKERS,missing_item_1c_cybersecurity,1
+DEEP SEA FOREIGN TRANSPORTATION OF FREIGHT,missing_item_1c_cybersecurity,1
+DENTAL EQUIPMENT & SUPPLIES,missing_item_1c_cybersecurity,1
+DRAWING AND INSULATING NONFERROUS WIRE,missing_item_1c_cybersecurity,1
+ELECTRIC HOUSEWARES & FANS,missing_item_1c_cybersecurity,1
+ELECTRIC LIGHTING & WIRING EQUIPMENT,item_1c_too_short,1
+LEATHER & LEATHER PRODUCTS,item_1c_too_short,1
+LIFE INSURANCE,item_1c_too_long,1
+RETAIL-DRUG STORES AND PROPRIETARY STORES,item_1c_too_short,1
+PREPARED FRESH OR FROZEN FISH & SEAFOODS,item_1c_too_short,1
+PAPER MILLS,missing_item_1c_cybersecurity,1
+PAPERS & ALLIED PRODUCTS,item_1c_too_short,1
+PATENT OWNERS & LESSORS,item_1c_too_short,1
+"PERFUMES, COSMETICS & OTHER TOILET PREPARATIONS",item_1c_too_short,1
+PERSONAL CREDIT INSTITUTIONS,item_1c_too_short,1
+PHARMACEUTICAL PREPARATIONS,missing_section_end,1
+PHOTOGRAPHIC EQUIPMENT & SUPPLIES,item_1c_too_short,1
+PIPE LINES (NO NATURAL GAS),item_1c_wrong_start,1
+"PLASTIC MATERIAL, SYNTH RESIN/RUBBER, CELLULOS (NO GLASS)",item_1c_too_short,1
+"PLASTICS PRODUCTS, NEC",item_1c_too_short,1
+"PLASTICS, FOIL & COATED PAPER BAGS",missing_item_1c_cybersecurity,1
+POTTERY & RELATED PRODUCTS,missing_item_1c_cybersecurity,1
+POULTRY SLAUGHTERING AND PROCESSING,item_1c_too_short,1
+PULP MILLS,missing_item_1c_cybersecurity,1
+"ORTHOPEDIC, PROSTHETIC & SURGICAL APPLIANCES & SUPPLIES",item_1c_too_short,1
+PUMPS & PUMPING EQUIPMENT,missing_item_1c_cybersecurity,1
+RADIO BROADCASTING STATIONS,item_1c_too_short,1
+RADIO TELEPHONE COMMUNICATIONS,missing_item_1c_cybersecurity,1
+"RAILROADS, LINE-HAUL OPERATING",item_1c_too_short,1
+REAL ESTATE INVESTMENT TRUSTS,missing_section_end,1
+REAL ESTATE OPERATORS (NO DEVELOPERS) & LESSORS,item_1c_too_short,1
+REFRIGERATION & SERVICE INDUSTRY MACHINERY,item_1c_too_short,1
+RETAIL-APPAREL & ACCESSORY STORES,missing_item_1c_cybersecurity,1
+RETAIL-AUTO DEALERS & GASOLINE STATIONS,missing_item_1c_cybersecurity,1
+"RETAIL-BUILDING MATERIALS, HARDWARE, GARDEN SUPPLY",missing_item_1c_cybersecurity,1
+RETAIL-COMPUTER & COMPUTER SOFTWARE STORES,item_1c_too_short,1
+RETAIL-COMPUTER & COMPUTER SOFTWARE STORES,missing_item_1c_cybersecurity,1
+RETAIL-CONVENIENCE STORES,missing_item_1c_cybersecurity,1
+"PAINTS, VARNISHES, LACQUERS, ENAMELS & ALLIED PRODUCTS",missing_item_1c_cybersecurity,1
+OPERATIVE BUILDERS,item_1c_wrong_start,1
+LIFE INSURANCE,item_1c_wrong_start,1
+MISCELLANEOUS TRANSPORTATION EQUIPMENT,missing_item_1c_cybersecurity,1
+"MACHINE TOOLS, METAL CUTTING TYPES",missing_item_1c_cybersecurity,1
+MALT BEVERAGES,missing_item_1c_cybersecurity,1
+MANIFOLD BUSINESS FORMS,missing_item_1c_cybersecurity,1
+"MEASURING & CONTROLLING DEVICES, NEC",missing_item_1c_cybersecurity,1
+MEAT PACKING PLANTS,item_1c_too_short,1
+MEDICINAL CHEMICALS & BOTANICAL PRODUCTS,item_1c_too_short,1
+METALWORKING MACHINERY & EQUIPMENT,missing_item_1c_cybersecurity,1
+"MILLWOOD, VENEER, PLYWOOD & STRUCTURAL WOOD MEMBERS",missing_item_1c_cybersecurity,1
+MINERAL ROYALTY TRADERS,missing_item_1c_cybersecurity,1
+MISC INDUSTRIAL & COMMERCIAL MACHINERY & EQUIPMENT,item_1c_too_short,1
+"MISCELLANEOUS ELECTRICAL MACHINERY, EQUIPMENT & SUPPLIES",item_1c_too_short,1
+MISCELLANEOUS FABRICATED TEXTILE PRODUCTS,missing_item_1c_cybersecurity,1
+MISCELLANEOUS TRANSPORTATION EQUIPMENT,item_1c_too_short,1
+MOBILE HOMES,missing_item_1c_cybersecurity,1
+OIL ROYALTY TRADERS,missing_item_1c_cybersecurity,1
+MOTOR HOMES,item_1c_too_short,1
+"MOTORCYCLES, BICYCLES & PARTS",item_1c_too_short,1
+"MOTORCYCLES, BICYCLES & PARTS",missing_item_1c_cybersecurity,1
+MOTORS & GENERATORS,missing_item_1c_cybersecurity,1
+NATURAL GAS TRANSMISSION,missing_item_1c_cybersecurity,1
+NATURAL GAS TRANSMISSION & DISTRIBUTION,missing_item_1c_cybersecurity,1
+NEWSPAPERS:  PUBLISHING OR PUBLISHING & PRINTING,item_1c_too_short,1
+NEWSPAPERS:  PUBLISHING OR PUBLISHING & PRINTING,missing_item_1c_cybersecurity,1
+NONFERROUS FOUNDRIES (CASTINGS),missing_item_1c_cybersecurity,1
+OFFICE FURNITURE (NO WOOD),missing_item_1c_cybersecurity,1
+OIL & GAS FILED MACHINERY & EQUIPMENT,item_1c_wrong_start,1
+OIL AND GAS FIELD EXPLORATION SERVICES,missing_item_1c_cybersecurity,1
+OIL ROYALTY TRADERS,item_1c_too_short,1
+"WOOD HOUSEHOLD FURNITURE, (NO UPHOLSTERED)",missing_item_1c_cybersecurity,1

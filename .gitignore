@@ -13,8 +13,5 @@ __pycache__/
 *.npy
 *.model.state
 *.model.id2word
-*.html
-*.csv
 regi.py
-output/
 process_outputs/
