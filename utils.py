@@ -16,12 +16,12 @@ from scipy.stats import chi2_contingency
 from concurrent.futures import ProcessPoolExecutor
 
 
-def get_data(years:list[int]) -> dict[str, list[str]]:
+def get_data(years):
     output = {}
     for year in years:
         with open(f"process_outputs/processed_data_{year}.json", "r") as f:
-            output = {**output, **json.load(f)}
-
+            for company, words in json.load(f).items():
+                output[f"{company}_{year}"] = words
     return output
 
 def _normalized_std_for_k(args):

@@ -1,14 +1,15 @@
-[POST_PROCESS] Total unchanged companies: 484
+[POST_PROCESS] Total unchanged companies: 779
 [POST_PROCESS] Contingency Table:
-2025    0    1    2     3    4   All
-2024                                
-0     115   80  120   994   48  1357
-1      12   76   83     8  103   282
-2      18  131   60    94   27   330
-3     124   17  219    60   12   432
-4     214  183   66   292  173   928
-All   483  487  548  1448  363  3329
-[POST_PROCESS] Chi-square statistic: 1741.0441256578308
+2025    0    1    2    3    4    5   All
+2024                                    
+0     569   85   74  718   77  144  1667
+1      44   21    8   40  224   50   387
+2     121  101   41   76   76  127   542
+3      64   62    4   47   12   21   210
+4       0   90   17   10    6    5   128
+5       8    5  193   71   23   95   395
+All   806  364  337  962  418  442  3329
+[POST_PROCESS] Chi-square statistic: 2599.479318497339
 [POST_PROCESS] P-value: 0.0
-[POST_PROCESS] Total observations: 3329, Rows: 5, Columns: 5
-[POST_PROCESS] Cramer's V: 0.36159131929733307
+[POST_PROCESS] Total observations: 3329, Rows: 6, Columns: 6
+[POST_PROCESS] Cramer's V: 0.39518575686251073
