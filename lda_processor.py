@@ -12,7 +12,8 @@ class LDAProcessor:
         run_separately: bool = False,
         use_bigrams: bool = False,
         num_of_passes: int = 15,
-        num_of_iterations: int = 50
+        num_of_iterations: int = 50,
+        random_state: int = 42
     ) -> None:
         self.curr_data = curr_data
         self.prev_data = prev_data
@@ -21,6 +22,7 @@ class LDAProcessor:
         self.use_bigrams = use_bigrams
         self.num_of_passes = num_of_passes
         self.num_of_iterations = num_of_iterations
+        self.random_state = random_state
 
     def _prepare_doc(self, doc: list[str]) -> list[str]:
         if not self.use_bigrams:
@@ -37,6 +39,7 @@ class LDAProcessor:
         raw_docs = list(data.values()) if data is not None else list(self.curr_data.values()) + list(self.prev_data.values())
         docs = [self._prepare_doc(doc) for doc in raw_docs]
         dictionary = corpora.Dictionary(docs)
+        dictionary.filter_extremes(no_below=20, no_above=0.5, keep_n=None)
         corpus = [dictionary.doc2bow(doc) for doc in docs]
         return dictionary, corpus
 
@@ -46,13 +49,16 @@ class LDAProcessor:
             num_topics=self.num_topics,
             id2word=dictionary,
             passes=self.num_of_passes,
-            iterations=self.num_of_iterations
+            iterations=self.num_of_iterations,
+            random_state=self.random_state
         )
 
     def _get_dominant_topic(self, doc: list[str], dictionary, model) -> int:
         if not doc:
             return None
         bow = dictionary.doc2bow(doc)
+        if not bow:
+            return None
         topic_distribution = model.get_document_topics(bow)
         dominant_topic = max(topic_distribution, key=lambda x: x[1])[0]
         return dominant_topic
@@ -79,7 +85,7 @@ class LDAProcessor:
 
         results = []
 
-        for company in list(self.prev_data.keys()) + list(self.curr_data.keys()):
+        for company in list(set(self.prev_data) & set(self.curr_data)):
             prev_words = self._prepare_doc(self.prev_data.get(company, []))
             curr_words = self._prepare_doc(self.curr_data.get(company, []))
 
