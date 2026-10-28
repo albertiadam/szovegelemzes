@@ -38,7 +38,7 @@ Generated outputs (all in process_outputs/, which must exist before running):
     - Contingency table of topic transitions (with totals): contingency_table.csv
     - Skipped companies grouped by industry and reason: grouped_skipped_companies.csv
     - Skipped company counts by reason and by industry: reason_counts.csv, industry_counts.csv
-    - Chart of skipped companies by reason and top 10 industries: skipped_companies_counts.png
+    - Chart of skipped companies by reason, and top 10 industries stacked by reason: skipped_companies_counts.png
     - Printed to console: number of unchanged companies, chi-square statistic, p-value,
       number of observations and Cramer's V
 

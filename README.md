@@ -69,6 +69,7 @@ A filing is skipped, and the reason is recorded, when:
 - **Chi-square test of independence:** tests whether a company's 2025 topic is related to its 2024 topic.
 - **Cramér's V:** the strength of that relationship, from 0 (unrelated) to 1 (fully determined).
 - **Skipped companies:** counted by reason and by industry (SIC description), saved as tables and a chart.
+  The chart shows the count per reason, and the 10 industries with the most skipped companies, each bar stacked by reason.
 
 ## Data
 
@@ -157,7 +158,7 @@ Every run writes to `process_outputs/` (not tracked by git):
 | `contingency_table.csv` | 2024 × 2025 topic transition table, with totals |
 | `grouped_skipped_companies.csv` | skipped companies by industry and reason |
 | `reason_counts.csv`, `industry_counts.csv` | skipped companies by reason and by industry |
-| `skipped_companies_counts.png` | chart of skipped companies by reason and top 10 industries |
+| `skipped_companies_counts.png` | chart of skipped companies by reason, and the top 10 industries with each bar stacked by reason |
 | `elbow_graph.png`, `coherence_graph.png` | graphs from `utils.py` |
 
 The chi-square statistic, p-value and Cramér's V are printed to the console.

@@ -13,7 +13,8 @@ Generated outputs (in process_outputs/):
     - Contingency table of topic transitions (with totals): contingency_table.csv
     - Skipped companies grouped by industry and reason: grouped_skipped_companies.csv
     - Skipped company counts by reason and by industry: reason_counts.csv, industry_counts.csv
-    - Chart of skipped companies by reason and top 10 industries: skipped_companies_counts.png
+    - Chart of skipped companies: skipped_companies_counts.png
+      left: counts per reason, right: top 10 industries, each bar stacked by reason
     - Printed to console: contingency table, number of unchanged companies, chi-square statistic,
       p-value, number of observations, Cramer's V and the skipped company summaries
 """
@@ -92,6 +93,11 @@ class PostProcessor:
             - chi-square test of independence on the transition table (without the totals)
             - Cramer's V: strength of the relationship between the topics of the two years,
               from 0 (no relationship) to 1 (topics fully determined by the previous year)
+
+        Chart of the skipped companies (two charts side by side):
+            - left: number of skipped companies per reason
+            - right: the 10 industries with the most skipped companies, each bar stacked by reason
+            Each reason has the same color in both charts.
         """
         trans_matrix = self._get_cross_tab()
         print("[POST_PROCESS] Contingency Table:")
