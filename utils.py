@@ -82,7 +82,8 @@ def _score_k(args):
     return k, u_mass, c_v
 
 
-def create_coherence_graph(data, k_values, use_cv=False, passes=15, iterations=50):
+def create_coherence_graph(data, max_topics=10, use_cv=False, passes=15, iterations=50):
+    k_values = list(range(2, max_topics + 1))
     texts = list(data.values())
     dictionary = corpora.Dictionary(texts)
     dictionary.filter_extremes(no_below=20, no_above=0.5, keep_n=None)
@@ -125,5 +126,8 @@ def topic_stats(results_df):
 
 
 if __name__ == "__main__":
-    res = create_elbow_graph(get_data([2024, 2025]))
-    print(res)
+    data = get_data([2024, 2025])
+    coherence_data = create_coherence_graph(data, max_topics=10, use_cv=True)
+    elbow_data = create_elbow_graph(data,max_topics=10, bigrams=False)
+    print(f"Coherence Data: {coherence_data}")
+    print(f"Elbow Data: {elbow_data}")
