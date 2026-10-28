@@ -124,15 +124,25 @@ class PostProcessor:
         fig, (ax_reason, ax_industry) = plt.subplots(1, 2, figsize=(16, 7))
         fig.suptitle("Counts of skipped companies")
 
-        ax_reason.bar(reason_counts.index, reason_counts.values)
+        reason_colors = {reason: plt.cm.tab10(i) for i, reason in enumerate(reason_counts.index)}
+
+        ax_reason.bar(reason_counts.index, reason_counts.values, color=[reason_colors[r] for r in reason_counts.index])
         ax_reason.set_xlabel("Reason")
         ax_reason.set_ylabel("Count")
         plt.setp(ax_reason.get_xticklabels(), rotation=45, ha='right')
 
-        industry_labels = [str(name).title() for name in sorted_industry_counts.index]
-        ax_industry.bar(industry_labels, sorted_industry_counts.values)
+        industry_by_reason = grouped_by_skipped_companies.pivot_table(
+            index='industry', columns='reason', values='skipped_companies_count', aggfunc='sum', fill_value=0
+        ).reindex(index=sorted_industry_counts.index, columns=reason_counts.index, fill_value=0)
+        industry_labels = [str(name).title() for name in industry_by_reason.index]
+        bottom = np.zeros(len(industry_by_reason))
+        for reason in industry_by_reason.columns:
+            values = industry_by_reason[reason].values
+            ax_industry.bar(industry_labels, values, bottom=bottom, label=reason, color=reason_colors[reason])
+            bottom += values
         ax_industry.set_xlabel("Industry")
         ax_industry.set_ylabel("Count")
+        ax_industry.legend(title="Reason")
         plt.setp(ax_industry.get_xticklabels(), rotation=45, ha='right', rotation_mode='anchor', fontsize=9)
 
         fig.tight_layout()
