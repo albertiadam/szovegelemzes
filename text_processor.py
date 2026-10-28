@@ -1,3 +1,32 @@
+"""
+Text processing of the filtered 10-K filings.
+
+Extracts the "Item 1C - Cybersecurity" section of each filing and turns it into a list of lemmatized words.
+
+Steps for each filing:
+ - remove HTML tags and entities, collapse whitespace
+ - find the Item 1C heading, skipping cross-references and table of contents entries
+ - find the end of the section: the Item 2 - Properties heading, or Item 1D / Item 3 / Item 4 /
+   "Executive Officers of the Registrant" when Item 2 is missing or comes later
+ - check the section length (MIN_ITEM_1C_WORDS to MAX_ITEM_1C_WORDS words)
+ - clean the words, remove stopwords (gensim STOPWORDS) and lemmatize with spaCy (en_core_web_sm)
+
+Files are processed in parallel with ProcessPoolExecutor. The spaCy model (WORKER) is loaded
+when the module is imported, so each worker process loads its own copy.
+
+Skip reasons (saved in the skipped file details):
+ - missing_item_1c_cybersecurity: no Item 1C heading found
+ - missing_section_end: no heading found after Item 1C
+ - item_1c_too_short: fewer than MIN_ITEM_1C_WORDS words
+ - item_1c_too_long: more than MAX_ITEM_1C_WORDS words, meaning the end heading was missed
+ - item_1c_wrong_start: the section contains the Item 1B heading, meaning the start was a cross-reference
+ - empty_after_processing: no words left after cleaning
+
+Generated outputs:
+    - Processed data (output_file, e.g. processed_data_{year}.json): company name -> list of words
+    - Skipped file details (skipped_output_file, e.g. skipped_file_details_{year}.csv):
+      the filtered file details of each skipped filing plus a reason column
+"""
 import os
 import re
 import html
@@ -82,8 +111,7 @@ def _process_single_file_with_status(
         return cleaned_words, "item_1c_too_long"
 
     # Item 1B always precedes Item 1C, so a section containing the 1B heading started
-    # at a cross-reference or table of contents entry, not at the rea
-    # l 1C heading.
+    # at a cross-reference or table of contents entry, not at the real 1C heading.
     if re.search(r"\bi\s?t\s?e\s?m\s*1\s*b\b|unresolved\s+staff\s+comments", item_1c_text, re.IGNORECASE):
         return cleaned_words, "item_1c_wrong_start"
 
@@ -111,7 +139,7 @@ class TextProcessor:
         base_path: Path,
         output_file: str,
         skipped_output_file: str | None = None,
-    ):
+    ) -> None:
         """
         Initialize the TextProcessor with the filtered files DataFrame, base path, and output file names.
 
@@ -126,7 +154,7 @@ class TextProcessor:
         self.skipped_output_file = skipped_output_file
 
     @staticmethod
-    def clean_word(word):
+    def clean_word(word: str) -> str | None:
         """
         Clean a single word by removing unwanted characters and patterns.
 
@@ -149,9 +177,12 @@ class TextProcessor:
     def process_all_files(self, workers: int | None = None) -> dict[str, list[str]]:
         """
         Process all files in the filtered DataFrame using multiple processes.
+        Saves the processed tokens to output_file, and the skipped files with their reasons
+        to skipped_output_file (if given).
 
         :param workers: Number of worker processes to use. If None, it will use the number of CPU cores.
         :return: A dictionary mapping company names to lists of processed tokens.
+            Skipped companies are left out.
         """
         if self.filtered_files_df.empty:
             return {}

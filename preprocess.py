@@ -1,3 +1,24 @@
+"""
+Preprocessing of the EDGAR 10-X filings.
+
+Selects which filings of a year go into the analysis, based on the header of each file.
+Expected folder layout: base_path/<quarter folder, e.g. QTR1>/<filing .txt files>
+
+Filtering steps:
+ - keep files with "K" in the file name (10-K filings and their variants)
+ - keep filings whose period of report is on or after Dec 15 of the previous year,
+   the date from which Item 1C - Cybersecurity is required
+ - drop amendments (10-K/A, 10-KT/A)
+ - drop asset-backed entities, trusts and funds by company name keyword (_ABS_KEYWORDS)
+ - keep one filing per company: the latest period of report, then the latest submit date,
+   then the highest filing sequence
+
+Generated outputs:
+    - Filtered file details (output_file, e.g. filtered_file_details_{year}.csv):
+      folder, file_name, period_of_report, company_name, accession_number, industry, sic,
+      submit_date, form, filing_sequence
+    - Companies excluded by ABS / trust / fund keyword: process_outputs/abs_companies_{year}.csv
+"""
 from pathlib import Path
 import os
 import re
@@ -10,7 +31,7 @@ class PreProcessor:
     """ PreProcessor class to filter and preprocess files based on specific criteria. """
     _ABS_KEYWORDS: ClassVar[list[str]] = ['trust', 'receivables', 'securitization', 'mortgage','fund']
 
-    def __init__(self, base_path: Path, year:str, output_file:str="filtered_file_details.csv"):
+    def __init__(self, base_path: Path, year: str, output_file: str = "filtered_file_details.csv") -> None:
         """
         Initialize the PreProcessor with the base path, year, and output file name.
         :param base_path: The base path where the files are located.
@@ -22,11 +43,14 @@ class PreProcessor:
         self.year = year
         self.cyber_security_needed_date = int(f"{int(year) - 1}1215")
 
-    def preprocess_file(self, file_folder: list[str]) -> list[str]:
+    def preprocess_file(self, file_folder: list[str]) -> list[str | int | None] | None:
         """
         Preprocess a single file to extract relevant details.
+        Only the first 10,000 characters (the filing header) are read.
         :param file_folder: A list containing the file name and folder name.
-        :return: A list containing the extracted details or None if the file does not meet criteria.
+        :return: A list containing the extracted details
+            [folder, file_name, period_of_report, company_name, accession_number, industry, sic]
+            or None if the file does not meet criteria or cannot be read.
         """
         file, folder = file_folder
         try:
@@ -78,10 +102,12 @@ class PreProcessor:
         files = [[file,folder] for file,folder in files if "K" in file]
         return files
 
-    def filter_files(self, file_details_list: list[list[str]]) -> pd.DataFrame:
+    def filter_files(self, file_details_list: list[list[str | int | None]]) -> pd.DataFrame:
         """
-        Filter the list of file details based on specific criteria.
-        :param file_details_list: List of file details to filter.
+        Filter the list of file details based on specific criteria:
+        drops amendments and ABS / trust / fund companies, and keeps one filing per company.
+        Saves the companies dropped by ABS keyword to process_outputs/abs_companies_{year}.csv.
+        :param file_details_list: List of file details to filter (output of preprocess_file).
         :return: Filtered DataFrame containing the relevant file details.
         """
         filtered_df = pd.DataFrame(file_details_list)
@@ -116,8 +142,8 @@ class PreProcessor:
         
         filtered_df['filing_sequence'] = filtered_df['file_name'].apply(lambda x: int(x.split("-")[-1].split(".")[0]))
         
-        # One filing per company and reporting period: the latest by submit date, then by
-        # sequence number.
+        # One filing per company: the latest period of report, then the latest submit date,
+        # then the highest sequence number.
         filtered_df = filtered_df.sort_values(
             by=['company_name', 'period_of_report', 'submit_date', 'filing_sequence'],
             ascending=[True, True, True, True]
@@ -129,7 +155,8 @@ class PreProcessor:
         """
         Run the preprocessing steps: get files, preprocess them, and filter the results.
         Uses ThreadPoolExecutor to parallelize the preprocessing of files.
-        
+        Saves the filtered file details to output_file.
+
         :return: Filtered DataFrame containing the relevant file details or None if no files were found.
         """
         files = self.get_files()
