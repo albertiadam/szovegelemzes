@@ -29,7 +29,7 @@ def _normalized_std_for_k(args):
     model = LdaModel(
         corpus=corpus, num_topics=k, id2word=dictionary,
         passes=passes, iterations=iterations,
-        random_state=42, eval_every=None,
+        random_state=10, eval_every=None,
     )
     gamma, _ = model.inference(corpus)
     probs = gamma / gamma.sum(axis=1, keepdims=True)
@@ -125,5 +125,5 @@ def topic_stats(results_df):
 
 
 if __name__ == "__main__":
-    res = create_coherence_graph(get_data([2024, 2025]), k_values=range(4, 10), use_cv=True)
+    res = create_elbow_graph(get_data([2024, 2025]))
     print(res)
