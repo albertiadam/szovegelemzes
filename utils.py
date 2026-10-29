@@ -104,10 +104,10 @@ def create_elbow_graph(
         stds = list(executor.map(_normalized_std_for_k, jobs))
 
     plt.figure(figsize=(10, 6))
-    plt.plot(k_values, stds, marker="o", label="Normalized Std of Topic Probabilities")
-    plt.title("Elbow Method for Optimal Number of Topics")
-    plt.xlabel("Number of Topics (k)")
-    plt.ylabel("Normalized Std")
+    plt.plot(k_values, stds, marker="o", label="Topikvalószínűségek normalizált szórása")
+    plt.title("Könyökmódszer az optimális topikszám meghatározásához")
+    plt.xlabel("Topikok száma (k)")
+    plt.ylabel("Normalizált szórás")
     plt.xticks(k_values)
     plt.grid(True)
     suffix = "_bigrams" if bigrams else ""
@@ -176,15 +176,15 @@ def create_coherence_graph(
     ks = [r[0] for r in results]
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(ks, [r[1] for r in results], marker="o", label="u_mass")
-    ax.set_xlabel("Number of Topics (k)")
-    ax.set_ylabel("u_mass (closer to 0 is better)")
+    ax.set_xlabel("Topikok száma (k)")
+    ax.set_ylabel("u_mass (minél közelebb van a 0-hoz, annál jobb)")
     ax.set_xticks(ks)
     ax.grid(True)
     if use_cv:
         ax2 = ax.twinx()
         ax2.plot(ks, [r[2] for r in results], marker="s", color="tab:orange", label="c_v")
-        ax2.set_ylabel("c_v (higher is better)")
-    plt.title("Topic coherence by number of topics")
+        ax2.set_ylabel("c_v (minél nagyobb, annál jobb)")
+    plt.title("Topikkoherencia a topikok számának függvényében")
     fig.savefig("process_outputs/coherence_graph.png", bbox_inches="tight")
     plt.show()
     return results

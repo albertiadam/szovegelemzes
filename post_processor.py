@@ -12,6 +12,7 @@ Use-cases:
 Every skipped filing is counted, so a company skipped in both years is counted once in each year.
 In the charts the rare reasons (item_1c_wrong_start, item_1c_too_long, missing_section_end, ...)
 are merged into "other", otherwise their bars would be invisible.
+The chart titles, axis labels and reasons are in Hungarian (see REASON_LABELS_HU), the industry names stay in English.
 
 Generated outputs (in process_outputs/):
     - Contingency table of topic transitions (with totals): contingency_table.csv
@@ -29,6 +30,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import chi2_contingency
+
+# Hungarian chart labels. The CSVs and the console output stay in English.
+REASON_LABELS_HU: dict[str, str] = {
+    'missing_item_1c_cybersecurity': 'Hiányzó Item 1C szakasz',
+    'item_1c_too_short': 'Túl rövid Item 1C',
+    'item_1c_too_long': 'Túl hosszú Item 1C',
+    'item_1c_wrong_start': 'Hibás Item 1C kezdet',
+    'missing_section_end': 'Hiányzó szakaszvég',
+    'empty_after_processing': 'Feldolgozás után üres',
+    'other': 'Egyéb',
+}
+
 
 class PostProcessor:
     """ PostProcessor class to summarize topic changes between the two years and the skipped companies. """
@@ -129,21 +142,24 @@ class PostProcessor:
         skipped = all_skipped_companies.copy()
         main_reasons = ['missing_item_1c_cybersecurity', 'item_1c_too_short']
         skipped['reason'] = skipped['reason'].where(skipped['reason'].isin(main_reasons), 'other')
+        skipped['reason'] = skipped['reason'].map(REASON_LABELS_HU)
+        reason_order = [REASON_LABELS_HU[r] for r in main_reasons + ['other']]
         top_industries = skipped['industry'].value_counts().index[:10]
 
         # Figure 1: counts of all skipped filings
-        industry_by_reason = pd.crosstab(skipped['industry'], skipped['reason']).loc[top_industries]
+        industry_by_reason = pd.crosstab(skipped['industry'], skipped['reason']).loc[top_industries, reason_order]
 
         fig, (ax_reason, ax_industry) = plt.subplots(1, 2, figsize=(16, 7))
-        fig.suptitle("Counts of skipped filings")
-        skipped['reason'].value_counts().plot.bar(ax=ax_reason, xlabel="Reason", ylabel="Count", rot=0)
-        industry_by_reason.rename(index=str.title).plot.bar(ax=ax_industry, stacked=True, xlabel="Industry", ylabel="Count")
+        fig.suptitle("Kihagyott jelentések száma")
+        skipped['reason'].value_counts().plot.bar(ax=ax_reason, xlabel="Kihagyás oka", ylabel="Darabszám", rot=0)
+        industry_by_reason.rename(index=str.title).plot.bar(ax=ax_industry, stacked=True, xlabel="Iparág", ylabel="Darabszám")
+        ax_industry.legend(title="Kihagyás oka")
         plt.setp(ax_industry.get_xticklabels(), rotation=45, ha='right', rotation_mode='anchor', fontsize=9)
         fig.tight_layout()
         fig.savefig("process_outputs/skipped_companies_counts.png", bbox_inches="tight")
 
         # Figure 2: share of filings skipped, by year
-        reason_rates = pd.crosstab(skipped['reason'], skipped['year']) / all_filings['year'].value_counts() * 100
+        reason_rates = (pd.crosstab(skipped['reason'], skipped['year']) / all_filings['year'].value_counts() * 100).loc[reason_order]
         industry_rates = (
             pd.crosstab(skipped['industry'], skipped['year'])
             / pd.crosstab(all_filings['industry'], all_filings['year']) * 100
@@ -151,11 +167,12 @@ class PostProcessor:
 
         year_colors = ['#9085e9', '#4b3bb5']  # previous year lighter, current year darker
         fig, (ax_reason, ax_industry) = plt.subplots(1, 2, figsize=(16, 7), layout='constrained')
-        fig.suptitle("Share of skipped filings by year")
-        reason_rates.plot.bar(ax=ax_reason, xlabel="Reason", ylabel="Share of all filings (%)", rot=0, color=year_colors)
-        industry_rates.rename(index=str.title).plot.barh(ax=ax_industry, xlabel="Share of the industry's filings skipped (%)", ylabel="Industry", color=year_colors)
+        fig.suptitle("Kihagyott jelentések aránya évenként")
+        reason_rates.plot.bar(ax=ax_reason, xlabel="Kihagyás oka", ylabel="Az összes jelentés arányában (%)", rot=0, color=year_colors)
+        ax_reason.legend(title="Év")
+        industry_rates.rename(index=str.title).plot.barh(ax=ax_industry, xlabel="Az iparág kihagyott jelentéseinek aránya (%)", ylabel="Iparág", color=year_colors)
         ax_industry.invert_yaxis()  # most skipped industry at the top
-        ax_industry.legend(title="year", loc='lower right')
+        ax_industry.legend(title="Év", loc='lower right')
         fig.savefig("process_outputs/skipped_companies_rates_by_year.png", bbox_inches="tight")
         plt.show()
 
