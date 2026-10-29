@@ -221,6 +221,6 @@ def topic_stats(results_df: pd.DataFrame) -> dict[str, float]:
 if __name__ == "__main__":
     data = get_data([2024, 2025])
     coherence_data = create_coherence_graph(data, max_topics=10, use_cv=True)
-    #elbow_data = create_elbow_graph(data,max_topics=10, bigrams=False)
+    elbow_data = create_elbow_graph(data,max_topics=10, bigrams=False)
     print(f"Coherence Data: {coherence_data}")
-    #print(f"Elbow Data: {elbow_data}")
+    print(f"Elbow Data: {elbow_data}")

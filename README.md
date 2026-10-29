@@ -170,7 +170,7 @@ Every run writes to `process_outputs/` (not tracked by git):
 | `reason_counts.csv`, `industry_counts.csv` | skipped companies by reason and by industry |
 | `skipped_companies_counts.png` | chart of all skipped filings by reason, and the top 10 industries with each bar stacked by reason |
 | `skipped_companies_rates_by_year.png` | chart of the share of filings skipped by reason and in the top 10 industries, 2024 vs 2025 |
-| `coherence_graph.png`, `elbow_graph.png` | graphs from `utils.py` (the elbow graph only if its call is uncommented) |
+| `coherence_graph.png`, `elbow_graph.png` | graphs from `utils.py` |
 
 The chi-square statistic, p-value, Cramér's V and the skipped company counts by reason and by industry
 are printed to the console.
