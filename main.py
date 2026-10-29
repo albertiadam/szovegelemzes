@@ -38,9 +38,11 @@ Generated outputs (all in process_outputs/, which must exist before running):
     - Contingency table of topic transitions (with totals): contingency_table.csv
     - Skipped companies grouped by industry and reason: grouped_skipped_companies.csv
     - Skipped company counts by reason and by industry: reason_counts.csv, industry_counts.csv
-    - Chart of skipped companies by reason, and top 10 industries stacked by reason: skipped_companies_counts.png
+    - Chart of all skipped companies by reason, and top 10 industries stacked by reason: skipped_companies_counts.png
+    - Chart of the share of filings skipped by reason and in the top 10 industries, 2024 vs 2025:
+      skipped_companies_rates_by_year.png
     - Printed to console: number of unchanged companies, chi-square statistic, p-value,
-      number of observations and Cramer's V
+      number of observations, Cramer's V, and the skipped company counts by reason and by industry
 
 Settings at the start of main.py:
     - BASE_PATH_DICT: folders containing the 10-X data for each year
@@ -159,7 +161,8 @@ def main() -> None:
     post_processor = PostProcessor(
         lda_result_string_path="process_outputs/LDA_comparison_results.csv",
         years=['2024', '2025'],
-        skipped_data_path=SKIPPED_FILE_OUTPUT
+        skipped_data_path=SKIPPED_FILE_OUTPUT,
+        filtered_data_path=FILTERED_DF_OUTPUT
     )
     post_processor.get_summary()
 

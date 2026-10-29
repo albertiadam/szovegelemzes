@@ -68,8 +68,13 @@ A filing is skipped, and the reason is recorded, when:
 - **Transition table:** a contingency table of 2024 topic (rows) against 2025 topic (columns).
 - **Chi-square test of independence:** tests whether a company's 2025 topic is related to its 2024 topic.
 - **Cramér's V:** the strength of that relationship, from 0 (unrelated) to 1 (fully determined).
-- **Skipped companies:** counted by reason and by industry (SIC description), saved as tables and a chart.
-  The chart shows the count per reason, and the 10 industries with the most skipped companies, each bar stacked by reason.
+- **Skipped companies:** counted by reason and by industry (SIC description), saved as tables and shown in two charts.
+  Every skipped filing is counted, so a company skipped in both years counts once in each year.
+  In the charts the three rare reasons (wrong start, too long, missing section end) are merged into "other".
+  - *All skipped filings:* count per reason, and the 10 industries with the most skipped filings, each bar stacked by reason.
+  - *By year:* the share of all filings skipped for each reason, and the share of each industry's filings skipped,
+    2024 and 2025 side by side. Shares are used instead of counts, because the number of filings differs between
+    the years and between the industries.
 
 ## Data
 
@@ -158,10 +163,12 @@ Every run writes to `process_outputs/` (not tracked by git):
 | `contingency_table.csv` | 2024 × 2025 topic transition table, with totals |
 | `grouped_skipped_companies.csv` | skipped companies by industry and reason |
 | `reason_counts.csv`, `industry_counts.csv` | skipped companies by reason and by industry |
-| `skipped_companies_counts.png` | chart of skipped companies by reason, and the top 10 industries with each bar stacked by reason |
+| `skipped_companies_counts.png` | chart of all skipped filings by reason, and the top 10 industries with each bar stacked by reason |
+| `skipped_companies_rates_by_year.png` | chart of the share of filings skipped by reason and in the top 10 industries, 2024 vs 2025 |
 | `elbow_graph.png`, `coherence_graph.png` | graphs from `utils.py` |
 
-The chi-square statistic, p-value and Cramér's V are printed to the console.
+The chi-square statistic, p-value, Cramér's V and the skipped company counts by reason and by industry
+are printed to the console.
 
 ### Saved results
 
