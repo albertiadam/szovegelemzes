@@ -71,6 +71,7 @@ A filing is skipped, and the reason is recorded, when:
 - **Skipped companies:** counted by reason and by industry (SIC description), saved as tables and shown in two charts.
   Every skipped filing is counted, so a company skipped in both years counts once in each year.
   In the charts the three rare reasons (wrong start, too long, missing section end) are merged into "other".
+  The chart titles, axis labels and reasons are in Hungarian (e.g. "other" is "Egyéb"), the industry names stay in English.
   - *All skipped filings:* count per reason, and the 10 industries with the most skipped filings, each bar stacked by reason.
   - *By year:* the share of all filings skipped for each reason, and the share of each industry's filings skipped,
     2024 and 2025 side by side. Shares are used instead of counts, because the number of filings differs between
@@ -138,11 +139,15 @@ The number of passes and iterations can be changed with `LDA_MODEL_PASSES` and `
 python utils.py
 ```
 
-This trains LDA for k = 2 to 10 on the processed data of both years and draws two graphs:
+This trains LDA for k = 2 to 10 on the processed data of both years and draws the coherence graph:
 
-- **Coherence graph:** u_mass and c_v topic coherence for each k. Higher c_v and u_mass closer to 0 are better.
-- **Elbow graph:** how concentrated the companies' topic probabilities are for each k (1 = every company belongs
-  fully to one topic, 0 = evenly spread). The bend of the curve suggests a suitable k.
+- **Coherence graph** (`coherence_graph.png`): u_mass and c_v topic coherence for each k. Higher c_v and u_mass
+  closer to 0 are better.
+- **Elbow graph** (`elbow_graph.png`): how concentrated the companies' topic probabilities are for each k
+  (1 = every company belongs fully to one topic, 0 = evenly spread). The bend of the curve suggests a suitable k.
+  Its call is commented out at the bottom of [utils.py](utils.py), uncomment it to draw this graph as well.
+
+The graph labels are in Hungarian.
 
 `main.py` has to be run once before, so that `process_outputs/processed_data_{year}.json` exists.
 [utils.py](utils.py) also contains `topic_stats`, which calculates the share of companies whose topic did not change
@@ -165,7 +170,7 @@ Every run writes to `process_outputs/` (not tracked by git):
 | `reason_counts.csv`, `industry_counts.csv` | skipped companies by reason and by industry |
 | `skipped_companies_counts.png` | chart of all skipped filings by reason, and the top 10 industries with each bar stacked by reason |
 | `skipped_companies_rates_by_year.png` | chart of the share of filings skipped by reason and in the top 10 industries, 2024 vs 2025 |
-| `elbow_graph.png`, `coherence_graph.png` | graphs from `utils.py` |
+| `coherence_graph.png`, `elbow_graph.png` | graphs from `utils.py` (the elbow graph only if its call is uncommented) |
 
 The chi-square statistic, p-value, Cramér's V and the skipped company counts by reason and by industry
 are printed to the console.
@@ -176,7 +181,7 @@ The [output/](output/) folder holds the results used in the thesis:
 
 | Folder | Content |
 |---|---|
-| `data (for all)` | filtering and skipped company results, and the graphs used to choose k. These are the same for every LDA setting |
+| `data (for all)` | filtering and skipped company results, the skipped company charts, and the graphs used to choose k (`coherence_graph.png`, `elbow_graph.png`). These are the same for every LDA setting |
 | `no bigram, together` | single words, one model for both years |
 | `no bigram, separate` | single words, one model per year |
 | `bigram, together` | bigrams, one model for both years |

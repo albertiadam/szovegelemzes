@@ -1,6 +1,7 @@
 """
 The following functions are not used in the main.py file but are useful for analyzing results.
-Run this file directly to create the coherence and elbow graphs for 2024 and 2025.
+Run this file directly to create the coherence graph for 2024 and 2025.
+The elbow graph call is commented out at the bottom of the file, uncomment it to create the elbow graph as well.
 
 Use-cases:
  - Determine the optimal number of topics for LDA using the elbow method
@@ -11,8 +12,9 @@ Input:
     - Processed data for each year from main.py: process_outputs/processed_data_{year}.json
 
 Generated outputs (in process_outputs/):
-    - Elbow graph: elbow_graph.png (elbow_graph_bigrams.png when bigrams are used)
     - Coherence graph: coherence_graph.png
+    - Elbow graph (only if its call is uncommented): elbow_graph.png (elbow_graph_bigrams.png when bigrams are used)
+    - The graph labels are in Hungarian
 
 Settings that differ from main.py:
     - The elbow graph models use random_state=10, the coherence graph models use random_state=42
@@ -219,6 +221,6 @@ def topic_stats(results_df: pd.DataFrame) -> dict[str, float]:
 if __name__ == "__main__":
     data = get_data([2024, 2025])
     coherence_data = create_coherence_graph(data, max_topics=10, use_cv=True)
-    elbow_data = create_elbow_graph(data,max_topics=10, bigrams=False)
+    #elbow_data = create_elbow_graph(data,max_topics=10, bigrams=False)
     print(f"Coherence Data: {coherence_data}")
-    print(f"Elbow Data: {elbow_data}")
+    #print(f"Elbow Data: {elbow_data}")
