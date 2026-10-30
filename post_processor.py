@@ -78,8 +78,8 @@ class PostProcessor:
         ).sum()
         print(f"[POST_PROCESS] Total unchanged companies: {unchanged}")
         trans_matrix = pd.crosstab(
-            cleaned_df['previous_dominant_topic'],
-            cleaned_df['current_dominant_topic'],
+            cleaned_df['previous_dominant_topic'] + 1,
+            cleaned_df['current_dominant_topic'] + 1,
             rownames=[f'{self.years[0]}'],
             colnames=[f'{self.years[1]}'],
             margins=True
