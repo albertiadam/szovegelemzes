@@ -133,23 +133,35 @@ The spaCy model `en_core_web_sm` is installed by `requirements.txt` as well.
 The number of passes and iterations can be changed with `LDA_MODEL_PASSES` and `LDA_MODEL_ITERATIONS` in
 [main.py](main.py). The other settings are listed in the docstring at the top of each module.
 
-### Choosing the number of topics
+### Choosing the number of topics and matching the topics
 
 ```bash
 python utils.py
 ```
 
-This trains LDA for k = 2 to 10 on the processed data of both years and draws the coherence graph:
+This trains LDA for k = 2 to 10 on the processed data of both years and draws two graphs:
 
 - **Coherence graph** (`coherence_graph.png`): u_mass and c_v topic coherence for each k. Higher c_v and u_mass
   closer to 0 are better.
 - **Elbow graph** (`elbow_graph.png`): how concentrated the companies' topic probabilities are for each k
   (1 = every company belongs fully to one topic, 0 = evenly spread). The bend of the curve suggests a suitable k.
-  Its call is commented out at the bottom of [utils.py](utils.py), uncomment it to draw this graph as well.
 
-The graph labels are in Hungarian.
+Then it matches the topics of the four saved LDA runs in [output/](output/) (listed in `RUNS` in [utils.py](utils.py)):
 
-`main.py` has to be run once before, so that `process_outputs/processed_data_{year}.json` exists.
+1. **Topic overlap:** in every run, each 2024 topic is paired with the 2025 topic that receives most of its companies.
+   Their overlap is the Jaccard index of the two sets of companies (companies in both / companies in either, 0 to 1),
+   so it is low both when companies leave the topic and when new companies join it. The table of every run is
+   printed to the console.
+2. **Stable topics:** the 3 pairs with the highest overlap in the reference run (`Bigram, évenkénti`).
+3. **Topic mapping table** (`topic_mapping.csv`, `topic_mapping.png`): each stable topic of the reference run (rows,
+   "2024 topic → 2025 topic") is matched to the topic with the highest overlap in every other run, on the same
+   companies, separately for 2024 and 2025 (columns). A cell shows the matching topic and the overlap, e.g. `6 (0,82)`,
+   or `-` if the best overlap is below 0.3.
+
+Topic numbers start from 1, as in the contingency tables. The graph and table labels are in Hungarian.
+
+`main.py` has to be run once before, so that `process_outputs/processed_data_{year}.json` exists, and the
+`LDA_comparison_results.csv` of the four runs have to be in their [output/](output/) folders.
 [utils.py](utils.py) also contains `topic_stats`, which calculates the share of companies whose topic did not change
 and the share expected by chance.
 
@@ -171,6 +183,7 @@ Every run writes to `process_outputs/` (not tracked by git):
 | `skipped_companies_counts.png` | chart of all skipped filings by reason, and the top 10 industries with each bar stacked by reason |
 | `skipped_companies_rates_by_year.png` | chart of the share of filings skipped by reason and in the top 10 industries, 2024 vs 2025 |
 | `coherence_graph.png`, `elbow_graph.png` | graphs from `utils.py` |
+| `topic_mapping.csv`, `topic_mapping.png` | topic mapping table of the four saved LDA runs, from `utils.py` |
 
 The chi-square statistic, p-value, Cramér's V and the skipped company counts by reason and by industry
 are printed to the console.
@@ -181,14 +194,15 @@ The [output/](output/) folder holds the results used in the thesis:
 
 | Folder | Content |
 |---|---|
-| `data (for all)` | filtering and skipped company results, the skipped company charts, and the graphs used to choose k (`coherence_graph.png`, `elbow_graph.png`). These are the same for every LDA setting |
+| `data (for all)` | filtering and skipped company results, the skipped company charts, the graphs used to choose k (`coherence_graph.png`, `elbow_graph.png`), and the topic mapping table of the four runs (`topic_mapping.csv`, `topic_mapping.png`). These are the same for every LDA setting |
 | `no bigram, together` | single words, one model for both years |
 | `no bigram, separate` | single words, one model per year |
 | `bigram, together` | bigrams, one model for both years |
 | `bigram, separate` | bigrams, one model per year |
 
 Each LDA folder contains the comparison results, the contingency table, the pyLDAvis visualizations and
-`contingency.txt` with the printed statistics.
+`contingency.txt` with the printed statistics. `kontingencia_tablak.xlsx` holds the four contingency tables
+in one 2×2 grid, for the thesis.
 
 ## Limitations
 
@@ -199,5 +213,7 @@ Each LDA folder contains the comparison results, the contingency table, the pyLD
   and the skipped companies are summarized by reason and industry to show what was left out.
 - **Separate models:** when LDA runs separately for each year, topic numbers are not matched between the years.
   Topic 0 in 2024 is not necessarily the same theme as topic 0 in 2025, so the transition table and Cramér's V
-  are only meaningful for the combined model, or after matching the topics by hand.
+  are only meaningful for the combined model, or after matching the topics. The topic mapping in
+  [utils.py](utils.py) matches topics by their companies, not by their words, so a match means the same companies,
+  which usually but not necessarily means the same theme.
 - **Fixed years:** the years 2024 and 2025 are set in `main()` in [main.py](main.py).

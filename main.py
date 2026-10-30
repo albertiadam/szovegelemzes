@@ -63,7 +63,8 @@ Hardcoded values across codebase:
     - LDA random_state=42 (lda_processor.py)
 
 utils.py is not used by this script. It holds helpers for choosing the number of topics
-(elbow and coherence graphs) and for topic stability statistics.
+(elbow and coherence graphs), for topic stability statistics, and for matching the topics
+of the saved LDA runs (topic mapping table).
 """
 import json
 import os
