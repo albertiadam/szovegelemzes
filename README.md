@@ -8,9 +8,13 @@ cybersecurity risk management, strategy and governance in a new section of the a
 finds the main themes in them with LDA (Latent Dirichlet Allocation) topic modelling, and measures
 how much each company's main theme changed between the two years.
 
+LDA numbers its topics arbitrarily, so the same theme can get a different number in each year and in each model
+setting. The **topic mapping** (step 5) matches the topics by the companies in them, so the results of the
+four model settings can be compared.
+
 ## How it works
 
-The analysis runs in four steps, each in its own module:
+The analysis runs in five steps, each in its own module:
 
 | Step | Module | What it does |
 |---|---|---|
@@ -18,8 +22,10 @@ The analysis runs in four steps, each in its own module:
 | 2. Text processing | [text_processor.py](text_processor.py) | Extracts the Item 1C section and turns it into a list of lemmatized words |
 | 3. Topic modelling | [lda_processor.py](lda_processor.py) | Trains LDA and assigns each company a dominant topic in each year |
 | 4. Post-processing | [post_processor.py](post_processor.py) | Compares the topics of the two years and summarizes the skipped companies |
+| 5. Topic mapping | [utils.py](utils.py) | Finds the stable topics and matches them between the years and the four model settings |
 
-[main.py](main.py) runs the four steps in order. [utils.py](utils.py) is run separately, to choose the number of topics.
+[main.py](main.py) runs steps 1–4 in order, once for each model setting. [utils.py](utils.py) is run separately:
+it helps choose the number of topics before step 3, and runs the topic mapping after all four settings are done.
 
 ### 1. Preprocessing – selecting the filings
 
@@ -77,6 +83,46 @@ A filing is skipped, and the reason is recorded, when:
     2024 and 2025 side by side. Shares are used instead of counts, because the number of filings differs between
     the years and between the industries.
 
+### 5. Topic mapping – matching topics between years and model settings
+
+**Why it is needed:** topic numbers mean nothing on their own. With separate models, topic 2 in 2024 and topic 2
+in 2025 come from two different models. Between the four model settings (single words or bigrams, combined or
+separate) the numbers do not match either. So the diagonal of a transition table only shows "unchanged" companies
+for the combined models, and the topics of different settings cannot be compared by their numbers.
+
+**How it works:** topics are matched by their companies. Two topics match when mostly the same companies have them
+as their dominant topic. The overlap of two topics is the Jaccard index of their companies:
+
+> overlap = companies in both topics / companies in either topic (0 = no common company, 1 = exactly the same companies)
+
+It is low both when companies leave a topic and when new companies join it, so a large topic cannot "match"
+a small one just by containing it.
+
+1. **Topic overlap within each run:** each 2024 topic is paired with the 2025 topic that receives most of its
+   companies, and their overlap is calculated. This shows which topics persist from 2024 to 2025.
+   The table of every run is printed to the console.
+2. **Stable topics:** the 3 pairs with the highest overlap in the reference run (`Bigram, évenkénti`).
+3. **Topic mapping table:** each stable topic is matched to the topic with the highest overlap in every other run,
+   on the same companies, separately for 2024 and 2025. Matches with an overlap below 0.3 are shown as `-`.
+
+**Reading the table** (saved result in `output/data (for all)/topic_mapping.csv`, reference run: `Bigram, évenkénti`):
+
+| Stable topic<br>2024 → 2025 | Unigram, közös<br>2024 | Unigram, közös<br>2025 | Bigram, közös<br>2024 | Bigram, közös<br>2025 | Unigram, évenkénti<br>2024 | Unigram, évenkénti<br>2025 |
+|---|---|---|---|---|---|---|
+| 4 → 6 | 2 (0,65) | 2 (0,55) | 6 (0,82) | 6 (0,71) | 6 (0,41) | 3 (0,55) |
+| 5 → 5 | 3 (0,42) | 3 (0,41) | 5 (0,73) | 5 (0,82) | 1 (0,57) | 4 (0,34) |
+| 6 → 3 | - | - | 2 (0,65) | 2 (0,63) | 4 (0,47) | - |
+
+- A row is a stable topic of the reference run: e.g. `4 → 6` is topic 4 in 2024, which continues as topic 6 in 2025.
+- A cell is the matching topic of another run and the overlap: e.g. `6 (0,82)` means that in 2024 the companies of
+  the reference topic 4 are mostly the companies of topic 6 in the `Bigram, közös` run, with an overlap of 0.82.
+- A topic that is matched with a high overlap in every run and in both years is robust: it does not depend on the
+  model setting. `-` means the topic has no counterpart in that run.
+
+Topic numbers start from 1, as in the contingency tables, while `LDA_comparison_results.csv` stores them from 0.
+The settings (`RUNS`, the reference run, the number of stable topics, the 0.3 threshold) are described in the
+docstring at the top of [utils.py](utils.py).
+
 ## Data
 
 The input is the **EDGAR 10-X filings** for 2024 and 2025 as plain-text files, one file per filing, in the format
@@ -133,35 +179,25 @@ The spaCy model `en_core_web_sm` is installed by `requirements.txt` as well.
 The number of passes and iterations can be changed with `LDA_MODEL_PASSES` and `LDA_MODEL_ITERATIONS` in
 [main.py](main.py). The other settings are listed in the docstring at the top of each module.
 
-### Choosing the number of topics and matching the topics
+### Choosing the number of topics and running the topic mapping
 
 ```bash
 python utils.py
 ```
 
-This trains LDA for k = 2 to 10 on the processed data of both years and draws two graphs:
+1. **Number of topics:** trains LDA for k = 2 to 10 on the processed data of both years and draws two graphs:
+   - **Coherence graph** (`coherence_graph.png`): u_mass and c_v topic coherence for each k. Higher c_v and u_mass
+     closer to 0 are better.
+   - **Elbow graph** (`elbow_graph.png`): how concentrated the companies' topic probabilities are for each k
+     (1 = every company belongs fully to one topic, 0 = evenly spread). The bend of the curve suggests a suitable k.
+2. **Topic mapping** ([step 5](#5-topic-mapping--matching-topics-between-years-and-model-settings)): prints the topic
+   overlap table of every run, and saves the topic mapping table (`topic_mapping.csv`, `topic_mapping.png`).
 
-- **Coherence graph** (`coherence_graph.png`): u_mass and c_v topic coherence for each k. Higher c_v and u_mass
-  closer to 0 are better.
-- **Elbow graph** (`elbow_graph.png`): how concentrated the companies' topic probabilities are for each k
-  (1 = every company belongs fully to one topic, 0 = evenly spread). The bend of the curve suggests a suitable k.
+The graph and table labels are in Hungarian.
 
-Then it matches the topics of the four saved LDA runs in [output/](output/) (listed in `RUNS` in [utils.py](utils.py)):
-
-1. **Topic overlap:** in every run, each 2024 topic is paired with the 2025 topic that receives most of its companies.
-   Their overlap is the Jaccard index of the two sets of companies (companies in both / companies in either, 0 to 1),
-   so it is low both when companies leave the topic and when new companies join it. The table of every run is
-   printed to the console.
-2. **Stable topics:** the 3 pairs with the highest overlap in the reference run (`Bigram, évenkénti`).
-3. **Topic mapping table** (`topic_mapping.csv`, `topic_mapping.png`): each stable topic of the reference run (rows,
-   "2024 topic → 2025 topic") is matched to the topic with the highest overlap in every other run, on the same
-   companies, separately for 2024 and 2025 (columns). A cell shows the matching topic and the overlap, e.g. `6 (0,82)`,
-   or `-` if the best overlap is below 0.3.
-
-Topic numbers start from 1, as in the contingency tables. The graph and table labels are in Hungarian.
-
-`main.py` has to be run once before, so that `process_outputs/processed_data_{year}.json` exists, and the
-`LDA_comparison_results.csv` of the four runs have to be in their [output/](output/) folders.
+Before running it, `main.py` has to be run once, so that `process_outputs/processed_data_{year}.json` exists.
+For the topic mapping, `main.py` has to be run with all four settings (6 topics), and each
+`LDA_comparison_results.csv` has to be copied to its folder in [output/](output/) (listed in `RUNS` in [utils.py](utils.py)).
 [utils.py](utils.py) also contains `topic_stats`, which calculates the share of companies whose topic did not change
 and the share expected by chance.
 
@@ -213,7 +249,8 @@ in one 2×2 grid, for the thesis.
   and the skipped companies are summarized by reason and industry to show what was left out.
 - **Separate models:** when LDA runs separately for each year, topic numbers are not matched between the years.
   Topic 0 in 2024 is not necessarily the same theme as topic 0 in 2025, so the transition table and Cramér's V
-  are only meaningful for the combined model, or after matching the topics. The topic mapping in
-  [utils.py](utils.py) matches topics by their companies, not by their words, so a match means the same companies,
-  which usually but not necessarily means the same theme.
+  are only meaningful for the combined model, or after matching the topics.
+- **Topic mapping:** topics are matched by their companies, not by their words. A match means the same group of
+  companies, which usually but not necessarily means the same theme; the top words of matched topics can be checked
+  in the pyLDAvis visualizations. The mapping assumes 6 topics in every run.
 - **Fixed years:** the years 2024 and 2025 are set in `main()` in [main.py](main.py).
