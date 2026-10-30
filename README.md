@@ -100,8 +100,12 @@ a small one just by containing it.
 
 1. **Topic overlap within each run:** each 2024 topic is paired with the 2025 topic that receives most of its
    companies, and their overlap is calculated. This shows which topics persist from 2024 to 2025.
-   The table of every run is printed to the console.
-2. **Stable topics:** the 3 pairs with the highest overlap in the reference run (`Bigram, évenkénti`).
+   The table of every run is printed to the console; the saved output is `output/data (for all)/topic_similarity.txt`.
+   In the combined runs every topic is paired with itself (the same model labels both years), so the overlap shows
+   how many companies stayed in the topic. In the separate runs the pairing also shows which 2025 topic continues
+   which 2024 topic.
+2. **Stable topics:** the 3 pairs with the highest overlap in the reference run (`Bigram, évenkénti`). In the saved
+   results these are 4 → 6 (0.60), 5 → 5 (0.66) and 6 → 3 (0.62), see `topic_similarity.txt`.
 3. **Topic mapping table:** each stable topic is matched to the topic with the highest overlap in every other run,
    on the same companies, separately for 2024 and 2025. Matches with an overlap below 0.3 are shown as `-`.
 
@@ -191,7 +195,8 @@ python utils.py
    - **Elbow graph** (`elbow_graph.png`): how concentrated the companies' topic probabilities are for each k
      (1 = every company belongs fully to one topic, 0 = evenly spread). The bend of the curve suggests a suitable k.
 2. **Topic mapping** ([step 5](#5-topic-mapping--matching-topics-between-years-and-model-settings)): prints the topic
-   overlap table of every run, and saves the topic mapping table (`topic_mapping.csv`, `topic_mapping.png`).
+   overlap table of every run (saved by hand as `topic_similarity.txt`), and saves the topic mapping table
+   (`topic_mapping.csv`, `topic_mapping.png`).
 
 The graph and table labels are in Hungarian.
 
@@ -230,7 +235,7 @@ The [output/](output/) folder holds the results used in the thesis:
 
 | Folder | Content |
 |---|---|
-| `data (for all)` | filtering and skipped company results, the skipped company charts, the graphs used to choose k (`coherence_graph.png`, `elbow_graph.png`), and the topic mapping table of the four runs (`topic_mapping.csv`, `topic_mapping.png`). These are the same for every LDA setting |
+| `data (for all)` | filtering and skipped company results, the skipped company charts, the graphs used to choose k (`coherence_graph.png`, `elbow_graph.png`), the topic overlap tables of the four runs (`topic_similarity.txt`), and the topic mapping table of the four runs (`topic_mapping.csv`, `topic_mapping.png`). These are the same for every LDA setting |
 | `no bigram, together` | single words, one model for both years |
 | `no bigram, separate` | single words, one model per year |
 | `bigram, together` | bigrams, one model for both years |
